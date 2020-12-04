@@ -221,6 +221,6 @@ socket.onmessage = event => {
     }    
     if (tempRanks !== user.pp_rank){
         tempRanks = user.pp_rank;
-        ranks.innerHTML = tempRanks;
+        ranks.innerHTML = "#" + tempRanks;
     }
 }
