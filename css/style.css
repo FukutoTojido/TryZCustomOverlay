@@ -1,0 +1,338 @@
+@font-face {
+    font-family: "Nexa Bold";
+    src: url("../fonts/GoogleSans-Bold.otf");
+}
+@font-face {
+    font-family: "Nexa Light";
+    src: url("../fonts/GoogleSans-Thin.otf");
+}
+@font-face {
+    font-family: "Gothic-b";
+    src: url("../fonts/GoogleSans-Regular.otf");
+}
+@font-face{
+    font-family:"outbound";
+    src:url("../fonts/outbound-regular.otf");
+}
+body,html{
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+}
+#main{
+    font-size: 30px;
+    font-family: Nexa Bold, Helvetica, sans-serif;
+    font-weight: normal;
+    color: white;
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+	#text-shadow: 0px 0px 8px black;
+}
+.odometer.odometer-auto-theme{
+    font-size: 24px !important;
+    font-family: "Nexa Bold", Helvetica, sans-serif !important;
+    font-weight: normal !important;	
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-default .odometer-digit .odometer-digit-inner {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    margin-left: -5px !important;
+    margin-right: -5px !important;
+}
+#nowPlayingContainer {
+	position: absolute;
+	left: 0px;
+	bottom: 40px;
+	width: 1920px;
+	height: 100px;
+	text-align: center;
+	align-content: center;
+    transition: ease-in-out 500ms;
+}
+/*#nowPlayingText {
+	position: absolute;
+    left: 170px;
+    width: 150px;
+    padding: 5px 0 5px 0;
+	color: #161616;
+	background-color: white;
+	border-radius: 25px;
+	box-shadow: 0px 0px 20px -5px black;
+    margin-top: -15px;
+	z-index: 1;
+    font-size: 15px;
+    text-align: center;
+}*/
+#mapContainer {
+	position: relative;
+    left: 715px;
+    height: 75px;
+	width: 490px;
+	background-color: black;
+    background-size: cover;
+	border-radius: 50px;
+	z-index: 1;
+	box-shadow: 0px 0px 20px -3px black;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    transition: ease-in-out 500ms;
+}
+#score {
+	position: absolute;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-radius: 25px;
+	top: 12.5px;
+    left: 400px;
+	width: 300px;
+    box-shadow: 0 5px 9px black;
+    
+	background-color: #FFFFFF;
+	color: #F6446E;
+    font-family: Nexa Bold;
+	font-size: 30px;
+	display: block;
+	
+    transition: ease-in-out 500ms;
+    
+    z-index: -1;
+}
+#acc {
+	position: absolute;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-radius: 25px;
+	top: 12.5px;
+    right: 400px;
+	width: 300px;
+    box-shadow: 0 5px 9px black;
+    
+	background-color: #FFFFFF;
+	color: #F6446E;
+    font-family: Nexa Bold;
+	font-size: 30px;
+	display: block;
+	
+    transition: ease-in-out 500ms;
+    
+    z-index: -1;
+}
+#combo {
+	position: absolute;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-radius: 25px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #161616;
+    bottom: 10px;
+    left: 600px;
+	width: 110px;
+    box-shadow: 0 5px 9px black;
+    
+	background-color: #FFFFFF;
+	color: #F6446E;
+    
+    font-family: Nexa Bold;
+	font-size: 15px;
+	display: block;
+	
+    transition: ease-in-out 500ms;
+    
+    z-index: 0;
+    
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#pp {
+	position: absolute;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-radius: 25px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #161616;
+    bottom: 10px;
+    right: 600px;
+	width: 110px;
+    box-shadow: 0 5px 9px black;
+    
+	background-color: #FFFFFF;
+	color: #F6446E;
+    
+    font-family: Nexa Bold;
+	font-size: 15px;
+	display: block;
+	
+    transition: ease-in-out 500ms;
+    
+    z-index: 0;
+    
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#accInfo {
+	position: absolute;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-radius: 25px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #161616;
+    bottom: 5px;
+    left: 840px;
+	width: 240px;
+    
+	background-color: #FFFFFF;
+	color: #F6446E;
+    
+    font-family: Nexa Bold;
+	font-size: 15px;
+	
+    transition: ease-in-out 500ms;
+    
+    z-index: 2;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#h300, #h100, #h50, #h0{
+    float: left;
+    width: 60px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#h100{
+    color: #4287f5;
+}
+#h50{
+    color: #a87dd4;
+}
+#h0{
+    color: #161616;
+}
+
+#overlay {
+	position: fixed;
+	height: 75px;
+	width: 490px;
+	z-index: 0;
+    background-color: rgba(0,0,0,0.70);
+	border-radius: 50px;
+}
+#mapArtist, #mapTitle, #mapDifficulty ,#mapper{
+    position: absolute;
+    font-family: Gothic-b;
+	width: 200px;
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	z-index: 0;
+    font-size: 15px;
+    text-shadow: 0 3px 5px black;
+}
+#mapArtist{
+    text-align:  Left;
+    top: 17px;
+    left: 30px;
+}
+#mapTitle{
+    text-align:  Right;
+    top: 17px;
+    right: 30px;
+}
+#mapDifficulty{
+    text-align:  Left;
+    top: 37px;
+    left: 30px;
+}
+#mapper{
+    text-align:  right;
+    top: 37px;
+    right: 30px;
+}
+#stars{
+    position: absolute;
+    font-family: Nexa Bold;
+	width: 200px;
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+    text-align: center;
+	z-index: 0;
+    font-size: 15px;
+    padding: 5px 0px 5px 0px;
+    color: #161616;
+    background-color: white;
+    box-shadow: 0 5px 9px black;
+    top: -20px;
+    left: 145px;
+    border-radius: 25px;
+    transition: ease-in-out 100ms;
+}
+
+.chat {
+	display: flex;
+	text-align: left;
+}
+
+.chatTime {
+	width: 5%;
+	color: silver;
+	padding-right: 10px;
+}
+.wholeChat {
+	width: 95%;
+	display: flex;
+}
+.chatName {
+	color: white;
+	white-space: nowrap;
+	width: max-content;
+}
+.chatText {
+	white-space: normal;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+.unknown {
+	color: yellow;
+}
+.bot {
+	color: #FF66AA;
+}
+.left {
+	color: #1fd0ed;
+}
+.right {
+	color: #ed1855;
+}
+
+
+/*Scrollbar*/
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    margin-top: 25px;
+    margin-bottom: 25px;
+	visibility: 0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: grey;
+	border-radius: 10px;
+}
+.text{
+    display: flex;
+    justify-content: center;
+}
