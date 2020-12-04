@@ -38,6 +38,11 @@ let pp = document.getElementById("pp");
 // PLAYER INFO
 let ava = document.getElementById("ava");
 let username = document.getElementById("username");
+let country = document.getElementById("country");
+let ranks = document.getElementById("ranks");
+
+// HP BAR
+let hp = document.getElementById("hp");
 
 socket.onopen = () => {
     console.log("Successfully Connected");
@@ -81,6 +86,10 @@ let tempPP;
 
 let tempUsername;
 let tempUID;
+let tempCountry;
+let tempRanks;
+
+let tempHP;
 
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
@@ -94,6 +103,9 @@ socket.onmessage = event => {
             accInfo.style.transform = "translateY(0)";
             ava.style.transform = "translateY(0)";
             username.style.transform = "translateY(0)";
+            country.style.transform = "translateY(0)";
+            ranks.style.transform = "translateY(0)";
+            hp.style.opacity = 1;
         }
         else {
             score.style.transform = "translateX(-1000px)";
@@ -103,6 +115,9 @@ socket.onmessage = event => {
             accInfo.style.transform = "translateY(200px)";
             ava.style.transform = "translateY(-300px)";
             username.style.transform = "translateY(-300px)";
+            country.style.transform = "translateY(-300px)";
+            ranks.style.transform = "translateY(-300px)";
+            hp.style.opacity = 0;
         }
     }
     if(tempUsername !== data.gameplay.name){
@@ -192,4 +207,20 @@ socket.onmessage = event => {
 		ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
     }
     ava.style.backgroundSize = "100%";
+	if (data.gameplay.hp.smooth > 0) {
+		hp.style.transform = `scaleX(${data.gameplay.hp.smooth / 200})`;
+    } 
+    else {
+		hp.style.transform = `scaleX(1)`;
+    }
+    if (tempCountry !== user.country){
+        tempCountry = user.country;
+        country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') white no-repeat`;
+        country.style.backgroundSize = "30px 20px";
+        country.style.backgroundPosition = "50% 50%";
+    }    
+    if (tempRanks !== user.pp_rank){
+        tempRanks = user.pp_rank;
+        ranks.innerHTML = tempRanks;
+    }
 }

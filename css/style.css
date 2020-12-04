@@ -40,7 +40,7 @@ body,html{
     margin-left: -5px !important;
     margin-right: -5px !important;
 }
-#nowPlayingContainer {
+/*#nowPlayingContainer {
 	position: absolute;
 	left: 0px;
 	bottom: 40px;
@@ -49,11 +49,17 @@ body,html{
 	text-align: center;
 	align-content: center;
     transition: ease-in-out 500ms;
+}*/
+#top{
+    position: absolute;
+    width: 1920px;
+    top: 5px;
+    height: 125px;
 }
 #ava {
     position:absolute;
     left: 920px;
-    bottom: 940px;
+    top: 0px;
     width: 80px;
     height: 80px;
     border-radius: 80px;
@@ -66,55 +72,71 @@ body,html{
 #username {
     position: absolute;
     left: 860px;
-    bottom: 920px;
+    top: 90px;
     width: 200px;
     padding: 5px 0 5px 0;
     background-color: white;
-    box-shadow: 0 -5px 9px black;
+    box-shadow: 0 0 3px black;
     border-radius: 25px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #161616;
     font-size: 15px;
     color: #161616;
     text-align: center;
     transition: ease-in-out 500ms;
     z-index: 1;
 }
-/*#nowPlayingText {
-	position: absolute;
-    left: 170px;
-    width: 150px;
-    padding: 5px 0 5px 0;
-	color: #161616;
-	background-color: white;
-	border-radius: 25px;
-	box-shadow: 0px 0px 20px -5px black;
-    margin-top: -15px;
-	z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}*/
-#mapContainer {
-	position: relative;
-    left: 715px;
-    height: 75px;
-	width: 490px;
-	background-color: black;
-    background-size: cover;
-	border-radius: 50px;
-	z-index: 1;
-	box-shadow: 0px 0px 9px -3px black;
+#country{
+    position: absolute;
+    left: 750px;
+    top: 90px;
+    width: 15px;
+    height: 10px;
+    padding: 10px 20px 10px 20px;
     border-style: solid;
     border-width: 2px;
-    border-color: white;
-    transition: ease-in-out 500ms;
+    border-color: #161616;
+    border-radius: 25px;
+    box-shadow: 0 0 3px black;
+}
+#ranks{
+    position: absolute;
+    right: 750px;
+    top: 90px;
+    width: 55px;
+    background-color: white;
+    padding: 5px 0px 5px 0px;
+    font-size: 15px;
+    color: #161616;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #161616;
+    border-radius: 25px;
+    box-shadow: 0 0 3px black;
+}
+#hp{
+    position: absolute;
+    transform-origin: centre;
+    width: 1800px;
+    top: 80px;
+    left: 60px;
+    padding: 2px 0 2px 0;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    box-shadow: 0 0px 9px black;
+    transition: ease-in-out 100ms;
+    z-index: -1;
 }
 #score {
 	position: absolute;
 	padding: 5px 0px 5px 0px;
 	text-align: center;
 	border-radius: 25px;
-	bottom: 960px;
-    left: 740px;
-	width: 200px;
+    top: 30px;
+    left: 720px;
+	width: 220px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
@@ -132,9 +154,9 @@ body,html{
 	padding: 5px 0px 5px 0px;
 	text-align: center;
 	border-radius: 25px;
-	bottom: 960px;
-    right: 740px;
-	width: 200px;
+    top: 30px;
+    right: 720px;
+	width: 220px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
@@ -146,6 +168,42 @@ body,html{
     transition: ease-in-out 500ms;
     
     z-index: -1;
+}
+/*#nowPlayingText {
+	position: absolute;
+    left: 170px;
+    width: 150px;
+    padding: 5px 0 5px 0;
+	color: #161616;
+	background-color: white;
+	border-radius: 25px;
+	box-shadow: 0px 0px 20px -5px black;
+    margin-top: -15px;
+	z-index: 1;
+    font-size: 15px;
+    text-align: center;
+}*/
+#bottom{
+    position: absolute;
+    width: 1920px;
+    height: 300px;
+    bottom: 20px;
+}
+#mapContainer {
+	position: absolute;
+    bottom: 20px;
+    left: 715px;
+    height: 70px;
+	width: 490px;
+	background-color: black;
+    background-size: cover;
+	border-radius: 50px;
+	z-index: 1;
+	box-shadow: 0px 0px 9px -3px black;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    transition: ease-in-out 500ms;
 }
 #combo {
 	position: absolute;
@@ -211,7 +269,7 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: #161616;
-    bottom: 5px;
+    bottom: 0px;
     left: 840px;
 	width: 240px;
     
@@ -248,98 +306,98 @@ body,html{
 
 #overlay {
 	position: fixed;
-	height: 75px;
+	height: 70px;
 	width: 490px;
 	z-index: 0;
     background-color: rgba(0,0,0,0.70);
 	border-radius: 50px;
 }
 #mapArtist, #mapTitle, #mapDifficulty ,#mapper{
-position: absolute;
-font-family: Gothic-b;
-width: 200px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-z-index: 0;
-font-size: 15px;
-text-shadow: 0 3px 5px black;
+    position: absolute;
+    font-family: Gothic-b;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 0;
+    font-size: 15px;
+    text-shadow: 0 3px 5px black;
 }
 #mapArtist{
-text-align:  Left;
-top: 17px;
-left: 30px;
+    text-align:  Left;
+    top: 17px;
+    left: 30px;
 }
 #mapTitle{
-text-align:  Right;
-top: 17px;
-right: 30px;
+    text-align:  Right;
+    top: 17px;
+    right: 30px;
 }
 #mapDifficulty{
-text-align:  Left;
-top: 37px;
-left: 30px;
+    text-align:  Left;
+    top: 37px;
+    left: 30px;
 }
 #mapper{
-text-align:  right;
-top: 37px;
-right: 30px;
+    text-align:  right;
+    top: 37px;
+    right: 30px;
 }
 #stars{
-position: absolute;
-font-family: Nexa Bold;
-width: 200px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-text-align: center;
-z-index: 0;
-font-size: 15px;
-padding: 5px 0px 5px 0px;
-color: #161616;
-background-color: white;
-box-shadow: 0 5px 9px black;
-top: -20px;
-left: 145px;
-border-radius: 25px;
-transition: ease-in-out 100ms;
+    position: absolute;
+    font-family: Nexa Bold;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    z-index: 0;
+    font-size: 15px;
+    padding: 5px 0px 5px 0px;
+    color: #161616;
+    background-color: white;
+    box-shadow: 0 5px 9px black;
+    top: -20px;
+    left: 145px;
+    border-radius: 25px;
+    transition: ease-in-out 100ms;
 }
 
 .chat {
-display: flex;
-text-align: left;
+    display: flex;
+    text-align: left;
 }
 
 .chatTime {
-width: 5%;
-color: silver;
-padding-right: 10px;
+    width: 5%;
+    color: silver;
+    padding-right: 10px;
 }
 .wholeChat {
-width: 95%;
-display: flex;
+    width: 95%;
+    display: flex;
 }
 .chatName {
-color: white;
-white-space: nowrap;
-width: max-content;
+    color: white;
+    white-space: nowrap;
+    width: max-content;
 }
 .chatText {
-white-space: normal;
-word-wrap: break-word;
-overflow: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 .unknown {
-color: yellow;
+    color: yellow;
 }
 .bot {
-color: #FF66AA;
+    color: #FF66AA;
 }
 .left {
-color: #1fd0ed;
+    color: #1fd0ed;
 }
 .right {
-color: #ed1855;
+    color: #ed1855;
 }
 
 
