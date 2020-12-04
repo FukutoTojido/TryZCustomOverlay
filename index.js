@@ -1,5 +1,12 @@
 let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/ws");
 let mapid = document.getElementById('mapid');
+let axios = window.axios;
+
+let user = async  function() => { await var response = axios.get("get_user", {
+    baseURL: "https://osu.ppy.sh/api",
+    params: {k:"da06327d3d13ccd56970dc52984ab893d556a7a3", u:"FukutoTojido"}
+})
+    return response.data};
 
 // NOW PLAYING
 let mapContainer = document.getElementById("mapContainer");
@@ -24,6 +31,9 @@ let h0 = document.getElementById("h0");
 
 // PERFORMANCE POINTS
 let pp = document.getElementById("pp");
+
+// AVATAR
+let ava = document.getElementById("ava");
 
 socket.onopen = () => {
     console.log("Successfully Connected");
@@ -85,6 +95,8 @@ socket.onmessage = event => {
             pp.style.transform = "translateY(-20px) translateX(-200px)";
         }
     }
+    ava.style.backgroundImage = `url('https://a.ppy.sh/${user.id}')`;
+    ava.style.backgroundSize = "100%";
 	if(tempImg !== data.menu.bm.path.full){
         tempImg = data.menu.bm.path.full;
         data.menu.bm.path.full = data.menu.bm.path.full.replace(/#/g,'%23').replace(/%/g,'%25').replace(/\\/g,'/');

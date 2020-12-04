@@ -50,6 +50,11 @@ body,html{
 	align-content: center;
     transition: ease-in-out 500ms;
 }
+#ava {
+    position:absolute;
+    width: 128px;
+    height: 128px;
+}
 /*#nowPlayingText {
 	position: absolute;
     left: 170px;
