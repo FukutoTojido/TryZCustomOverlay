@@ -1,12 +1,15 @@
 let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/ws");
 let mapid = document.getElementById('mapid');
 let axios = window.axios;
+let user = {};
 
-let user = async  function() => { await var response = axios.get("get_user", {
+
+
+/*let user = async  function() => { await var response = axios.get("get_user", {
     baseURL: "https://osu.ppy.sh/api",
     params: {k:"da06327d3d13ccd56970dc52984ab893d556a7a3", u:"FukutoTojido"}
-})
-    return response.data};
+    })
+return response.data};*/
 
 // NOW PLAYING
 let mapContainer = document.getElementById("mapContainer");
@@ -32,8 +35,9 @@ let h0 = document.getElementById("h0");
 // PERFORMANCE POINTS
 let pp = document.getElementById("pp");
 
-// AVATAR
+// PLAYER INFO
 let ava = document.getElementById("ava");
+let username = document.getElementById("username");
 
 socket.onopen = () => {
     console.log("Successfully Connected");
@@ -75,6 +79,9 @@ let temp0;
 
 let tempPP;
 
+let tempUsername;
+let tempUID;
+
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
     if(gameState !== data.menu.state){
@@ -83,20 +90,25 @@ socket.onmessage = event => {
             score.style.transform = "translateX(0)";
             acc.style.transform = "translateX(0)";
             combo.style.transform = "translateY(0)";
-            accInfo.style.transform = "translateY(0)";
-            accInfo.style.transform = "translateY(0)";
             pp.style.transform = "translateY(0)";
+            accInfo.style.transform = "translateY(0)";
+            ava.style.transform = "translateY(0)";
+            username.style.transform = "translateY(0)";
         }
         else {
-            score.style.transform = "translateX(+500px)";
-            acc.style.transform = "translateX(-500px)";
-            combo.style.transform = "translateY(-20px) translateX(200px)";
+            score.style.transform = "translateX(-1000px)";
+            acc.style.transform = "translateX(1000px)";
+            combo.style.transform = "translateY(1000px)";
+            pp.style.transform = "translateY(1000px)";
             accInfo.style.transform = "translateY(200px)";
-            pp.style.transform = "translateY(-20px) translateX(-200px)";
+            ava.style.transform = "translateY(-300px)";
+            username.style.transform = "translateY(-300px)";
         }
     }
-    ava.style.backgroundImage = `url('https://a.ppy.sh/${user.id}')`;
-    ava.style.backgroundSize = "100%";
+    if(tempUsername !== data.gameplay.name){
+        tempUsername = data.gameplay.name;
+        username.innerHTML = tempUsername;
+    }
 	if(tempImg !== data.menu.bm.path.full){
         tempImg = data.menu.bm.path.full;
         data.menu.bm.path.full = data.menu.bm.path.full.replace(/#/g,'%23').replace(/%/g,'%25').replace(/\\/g,'/');
@@ -160,4 +172,24 @@ socket.onmessage = event => {
         pp.innerHTML = tempPP;
         animation.pp.update(pp.innerHTML);
     }
+    let gerUser = async () => {
+        try {
+            const response = await axios.get("/get_user", {
+                baseURL: "https://osu.ppy.sh/api",
+                params: {
+                    k: "da06327d3d13ccd56970dc52984ab893d556a7a3",
+                    u: `${data.gameplay.name}`,
+                },
+            });
+            return response.data[0];
+            } catch (error) {
+            console.error(error);
+        }
+    };
+    Promise.resolve(gerUser()).then((data) => Object.assign(user, data));
+	if (tempUID !== user.user_id) {
+        tempUID = user.user_id;
+		ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
+    }
+    ava.style.backgroundSize = "100%";
 }

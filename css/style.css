@@ -52,8 +52,31 @@ body,html{
 }
 #ava {
     position:absolute;
-    width: 128px;
-    height: 128px;
+    left: 920px;
+    bottom: 940px;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+    box-shadow: 0 10px 9px black;
+    transition: ease-in-out 500ms;
+}
+#username {
+    position: absolute;
+    left: 860px;
+    bottom: 920px;
+    width: 200px;
+    padding: 5px 0 5px 0;
+    background-color: white;
+    box-shadow: 0 -5px 9px black;
+    border-radius: 25px;
+    font-size: 15px;
+    color: #161616;
+    text-align: center;
+    transition: ease-in-out 500ms;
+    z-index: 1;
 }
 /*#nowPlayingText {
 	position: absolute;
@@ -78,7 +101,7 @@ body,html{
     background-size: cover;
 	border-radius: 50px;
 	z-index: 1;
-	box-shadow: 0px 0px 20px -3px black;
+	box-shadow: 0px 0px 9px -3px black;
     border-style: solid;
     border-width: 2px;
     border-color: white;
@@ -89,15 +112,15 @@ body,html{
 	padding: 5px 0px 5px 0px;
 	text-align: center;
 	border-radius: 25px;
-	top: 12.5px;
-    left: 400px;
-	width: 300px;
+	bottom: 960px;
+    left: 740px;
+	width: 200px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
-	color: #F6446E;
+	color: #161616;
     font-family: Nexa Bold;
-	font-size: 30px;
+	font-size: 25px;
 	display: block;
 	
     transition: ease-in-out 500ms;
@@ -109,15 +132,15 @@ body,html{
 	padding: 5px 0px 5px 0px;
 	text-align: center;
 	border-radius: 25px;
-	top: 12.5px;
-    right: 400px;
-	width: 300px;
+	bottom: 960px;
+    right: 740px;
+	width: 200px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
-	color: #F6446E;
+	color: #161616;
     font-family: Nexa Bold;
-	font-size: 30px;
+	font-size: 25px;
 	display: block;
 	
     transition: ease-in-out 500ms;
@@ -132,16 +155,16 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: #161616;
-    bottom: 10px;
-    left: 600px;
-	width: 110px;
+    bottom: 35px;
+    left: 525px;
+	width: 200px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
-	color: #F6446E;
+	color: #161616;
     
     font-family: Nexa Bold;
-	font-size: 15px;
+	font-size: 25px;
 	display: block;
 	
     transition: ease-in-out 500ms;
@@ -160,16 +183,16 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: #161616;
-    bottom: 10px;
-    right: 600px;
-	width: 110px;
+    bottom: 35px;
+    right: 525px;
+	width: 200px;
     box-shadow: 0 5px 9px black;
     
 	background-color: #FFFFFF;
-	color: #F6446E;
+	color: #161616;
     
     font-family: Nexa Bold;
-	font-size: 15px;
+	font-size: 25px;
 	display: block;
 	
     transition: ease-in-out 500ms;
@@ -232,112 +255,112 @@ body,html{
 	border-radius: 50px;
 }
 #mapArtist, #mapTitle, #mapDifficulty ,#mapper{
-    position: absolute;
-    font-family: Gothic-b;
-	width: 200px;
-    white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	z-index: 0;
-    font-size: 15px;
-    text-shadow: 0 3px 5px black;
+position: absolute;
+font-family: Gothic-b;
+width: 200px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+z-index: 0;
+font-size: 15px;
+text-shadow: 0 3px 5px black;
 }
 #mapArtist{
-    text-align:  Left;
-    top: 17px;
-    left: 30px;
+text-align:  Left;
+top: 17px;
+left: 30px;
 }
 #mapTitle{
-    text-align:  Right;
-    top: 17px;
-    right: 30px;
+text-align:  Right;
+top: 17px;
+right: 30px;
 }
 #mapDifficulty{
-    text-align:  Left;
-    top: 37px;
-    left: 30px;
+text-align:  Left;
+top: 37px;
+left: 30px;
 }
 #mapper{
-    text-align:  right;
-    top: 37px;
-    right: 30px;
+text-align:  right;
+top: 37px;
+right: 30px;
 }
 #stars{
-    position: absolute;
-    font-family: Nexa Bold;
-	width: 200px;
-    white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-    text-align: center;
-	z-index: 0;
-    font-size: 15px;
-    padding: 5px 0px 5px 0px;
-    color: #161616;
-    background-color: white;
-    box-shadow: 0 5px 9px black;
-    top: -20px;
-    left: 145px;
-    border-radius: 25px;
-    transition: ease-in-out 100ms;
+position: absolute;
+font-family: Nexa Bold;
+width: 200px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+text-align: center;
+z-index: 0;
+font-size: 15px;
+padding: 5px 0px 5px 0px;
+color: #161616;
+background-color: white;
+box-shadow: 0 5px 9px black;
+top: -20px;
+left: 145px;
+border-radius: 25px;
+transition: ease-in-out 100ms;
 }
 
 .chat {
-	display: flex;
-	text-align: left;
+display: flex;
+text-align: left;
 }
 
 .chatTime {
-	width: 5%;
-	color: silver;
-	padding-right: 10px;
+width: 5%;
+color: silver;
+padding-right: 10px;
 }
 .wholeChat {
-	width: 95%;
-	display: flex;
+width: 95%;
+display: flex;
 }
 .chatName {
-	color: white;
-	white-space: nowrap;
-	width: max-content;
+color: white;
+white-space: nowrap;
+width: max-content;
 }
 .chatText {
-	white-space: normal;
-	word-wrap: break-word;
-	overflow: hidden;
+white-space: normal;
+word-wrap: break-word;
+overflow: hidden;
 }
 .unknown {
-	color: yellow;
+color: yellow;
 }
 .bot {
-	color: #FF66AA;
+color: #FF66AA;
 }
 .left {
-	color: #1fd0ed;
+color: #1fd0ed;
 }
 .right {
-	color: #ed1855;
+color: #ed1855;
 }
 
 
 /*Scrollbar*/
 ::-webkit-scrollbar {
-	width: 10px;
+width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    margin-top: 25px;
-    margin-bottom: 25px;
-	visibility: 0;
+margin-top: 25px;
+margin-bottom: 25px;
+visibility: 0;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: grey;
-	border-radius: 10px;
+background: grey;
+border-radius: 10px;
 }
 .text{
-    display: flex;
-    justify-content: center;
+display: flex;
+justify-content: center;
 }
