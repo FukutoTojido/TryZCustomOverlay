@@ -11,6 +11,7 @@ let stars = document.getElementById("stars");
 let starsCurrent = document.getElementById("starsCurrent");
 let nowPlayingContainer = document.getElementById("nowPlayingContainer");
 let overlay = document.getElementById("overlay");
+let mods = document.getElementById("mods");
 
 // PLAYING SCORE
 let score = document.getElementById("score");
@@ -86,6 +87,7 @@ let tempRanks;
 let tempPlayerPP;
 
 let tempHP;
+let tempMods;
 
 let tempTimeCurrent;
 let tempTimeFull;
@@ -99,6 +101,7 @@ socket.onmessage = event => {
             acc.style.transform = "translateX(0)";
             combo.style.transform = "translateX(0)";
             pp.style.transform = "translateX(0)";
+            mods.style.transform = "translateX(0)";
             accInfo.style.transform = "translateX(0)";
             ava.style.transform = "translateY(0)";
             playerPP.style.transform = "translateY(0)";
@@ -113,6 +116,7 @@ socket.onmessage = event => {
             acc.style.transform = "translateX(1000px)";
             combo.style.transform = "translateX(-500px)";
             pp.style.transform = "translateX(-500px)";
+            mods.style.transform = "translateX(-500px)";
             accInfo.style.transform = "translateX(-500px)";
             ava.style.transform = "translateY(-300px)";
             playerPP.style.transform = "translateY(-300px)";
@@ -149,89 +153,98 @@ socket.onmessage = event => {
         animation.starsCurrent.update(starsCurrent.innerHTML);
     }
     if (tempStars !== data.menu.bm.stats.fullSR) {
-        tempStars = data.menu.bm.stats.fullSR;
-        stars.innerHTML = tempStars;
-        animation.stars.update(stars.innerHTML);
+    tempStars = data.menu.bm.stats.fullSR;
+    stars.innerHTML = tempStars;
+    animation.stars.update(stars.innerHTML);
     }
     if (tempScore !== data.gameplay.score) {
-        tempScore = data.gameplay.score;
-        score.innerHTML = tempScore;
-        animation.score.update(score.innerHTML);
+    tempScore = data.gameplay.score;
+    score.innerHTML = tempScore;
+    animation.score.update(score.innerHTML);
     }
     if (tempAcc !== data.gameplay.accuracy) {
-        tempAcc = data.gameplay.accuracy;
-        acc.innerHTML = tempAcc;
-        animation.acc.update(acc.innerHTML);
+    tempAcc = data.gameplay.accuracy;
+    acc.innerHTML = tempAcc;
+    animation.acc.update(acc.innerHTML);
     }
     if (tempCombo !== data.gameplay.combo.current) {
-        tempCombo = data.gameplay.combo.current;
-        combo.innerHTML = tempCombo;
-        animation.combo.update(combo.innerHTML);
+    tempCombo = data.gameplay.combo.current;
+    combo.innerHTML = tempCombo;
+    animation.combo.update(combo.innerHTML);
     }
     if (temp300 !== data.gameplay.hits[300]){
-        temp300 = data.gameplay.hits[300];
-        h300.innerHTML = temp300;
+    temp300 = data.gameplay.hits[300];
+    h300.innerHTML = temp300;
     }   
     if (temp100 !== data.gameplay.hits[100]){
-        temp100 = data.gameplay.hits[100];
-        h100.innerHTML = temp100;
+    temp100 = data.gameplay.hits[100];
+    h100.innerHTML = temp100;
     }    
     if (temp50 !== data.gameplay.hits[50]){
-        temp50 = data.gameplay.hits[50];
-        h50.innerHTML = temp50;
+    temp50 = data.gameplay.hits[50];
+    h50.innerHTML = temp50;
     }    
     if (temp0 !== data.gameplay.hits[0]){
-        temp0 = data.gameplay.hits[0];
-        h0.innerHTML = temp0;
+    temp0 = data.gameplay.hits[0];
+    h0.innerHTML = temp0;
     }
     if (tempPP !== data.gameplay.pp.current ){
-        tempPP = data.gameplay.pp.current ;
-        pp.innerHTML = tempPP;
-        animation.pp.update(pp.innerHTML);
+    tempPP = data.gameplay.pp.current ;
+    pp.innerHTML = tempPP;
+    animation.pp.update(pp.innerHTML);
+    }
+    if (tempMods !== data.menu.mods.str){
+        if (data.menu.mods.num == 0){
+            tempsMods = "None";
+        }
+        else {
+            tempsMods = data.menu.mods.str;
+        }
+        mods.innerHTML = 'Mods: ' +tempsMods;
     }
     let gerUser = async () => {
-        try {
-            const response = await axios.get("/get_user", {
-                baseURL: "https://osu.ppy.sh/api",
-                params: {
-                    k: "",
-                    u: `${data.gameplay.name}`,
-                },
-            });
-            return response.data[0];
-            } catch (error) {
-            console.error(error);
-        }
+    try {
+    const response = await axios.get("/get_user", {
+    baseURL: "https://osu.ppy.sh/api",
+    params: {
+    k: "",
+    u: `${data.gameplay.name}`,
+    },
+    });
+    return response.data[0];
+    } catch (error) {
+    console.error(error);
+    }
     };
     Promise.resolve(gerUser()).then((data) => Object.assign(user, data));
 	if (tempUID !== user.user_id) {
-        tempUID = user.user_id;
-		ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
+    tempUID = user.user_id;
+    ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
     }
     ava.style.backgroundSize = "100%";
 	if (data.gameplay.hp.smooth > 0) {
-		hp.style.transform = `scaleX(${data.gameplay.hp.smooth / 200})`;
+    hp.style.transform = `scaleX(${data.gameplay.hp.smooth / 200})`;
     } 
     else {
-		hp.style.transform = `scaleX(1)`;
+    hp.style.transform = `scaleX(1)`;
     }
     if (tempCountry !== user.country){
-        tempCountry = user.country;
-        country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') no-repeat`;
-        country.style.backgroundSize = "22.5px 15px";
-        country.style.backgroundPosition = "50% 50%";
+    tempCountry = user.country;
+    country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') no-repeat`;
+    country.style.backgroundSize = "22.5px 15px";
+    country.style.backgroundPosition = "50% 50%";
     }    
     if (tempRanks !== user.pp_rank){
-        tempRanks = user.pp_rank;
-        ranks.innerHTML = "#" + tempRanks;
+    tempRanks = user.pp_rank;
+    ranks.innerHTML = "#" + tempRanks;
     }
     if (tempPlayerPP !== user.pp_raw){
-        tempPlayerPP = user.pp_raw;
-        playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
+    tempPlayerPP = user.pp_raw;
+    playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
     }
     if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.full) {
-        tempTimeCurrent = data.menu.bm.time.current;
-        tempTimeFull = data.menu.bm.time.full;
-		overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
+    tempTimeCurrent = data.menu.bm.time.current;
+    tempTimeFull = data.menu.bm.time.full;
+    overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
     } 
-}
+    }    

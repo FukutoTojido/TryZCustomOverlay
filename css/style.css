@@ -225,7 +225,7 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: white;
-    bottom: 35px;
+    bottom: 40px;
     left: 30px;
 	width: 150px;
     /*box-shadow: 5px 0px 3px rgba(0,0,0,.3);*/
@@ -255,7 +255,7 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: white;
-    bottom: 35px;
+    bottom: 40px;
     left: 160px;
 	width: 150px;
     box-shadow: 5px 0px 3px black;
@@ -293,6 +293,32 @@ body,html{
     font-family: Google Sans Bold;
 	font-size: 15px;
 	
+    transition: ease-in-out 500ms;
+    
+    z-index: 2;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#mods{
+    position: absolute;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #161616;
+    bottom: 80px;
+    left: 110px;
+    width: 120px;
+    
+    background-color: #FFFFFF;
+    color: #161616;
+    
+    font-family: Google Sans Bold;
+    font-size: 15px;
+    
     transition: ease-in-out 500ms;
     
     z-index: 2;
