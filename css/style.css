@@ -328,7 +328,7 @@ body,html{
     text-overflow: ellipsis;
     z-index: 0;
     font-size: 15px;
-    text-shadow: 0 3px 5px black;
+    text-shadow: 0 2px 3px black;
     text-align:  Center;
 }
 #starsContainer{
