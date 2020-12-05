@@ -3,14 +3,6 @@ let mapid = document.getElementById('mapid');
 let axios = window.axios;
 let user = {};
 
-
-
-/*let user = async  function() => { await var response = axios.get("get_user", {
-    baseURL: "https://osu.ppy.sh/api",
-    params: {k:"da06327d3d13ccd56970dc52984ab893d556a7a3", u:"FukutoTojido"}
-    })
-return response.data};*/
-
 // NOW PLAYING
 let mapContainer = document.getElementById("mapContainer");
 let mapTitle = document.getElementById("mapTitle");
@@ -40,6 +32,7 @@ let ava = document.getElementById("ava");
 let username = document.getElementById("username");
 let country = document.getElementById("country");
 let ranks = document.getElementById("ranks");
+let playerPP = document.getElementById("playerPP");
 
 // HP BAR
 let hp = document.getElementById("hp");
@@ -90,6 +83,7 @@ let tempUsername;
 let tempUID;
 let tempCountry;
 let tempRanks;
+let tempPlayerPP;
 
 let tempHP;
 
@@ -107,6 +101,7 @@ socket.onmessage = event => {
             pp.style.transform = "translateX(0)";
             accInfo.style.transform = "translateX(0)";
             ava.style.transform = "translateY(0)";
+            playerPP.style.transform = "translateY(0)";
             username.style.transform = "translateY(0)";
             country.style.transform = "translateY(0)";
             ranks.style.transform = "translateY(0)";
@@ -120,6 +115,7 @@ socket.onmessage = event => {
             pp.style.transform = "translateX(-500px)";
             accInfo.style.transform = "translateX(-500px)";
             ava.style.transform = "translateY(-300px)";
+            playerPP.style.transform = "translateY(-300px)";
             username.style.transform = "translateY(-300px)";
             country.style.transform = "translateY(-300px)";
             ranks.style.transform = "translateY(-300px)";
@@ -198,7 +194,7 @@ socket.onmessage = event => {
             const response = await axios.get("/get_user", {
                 baseURL: "https://osu.ppy.sh/api",
                 params: {
-                    k: "da06327d3d13ccd56970dc52984ab893d556a7a3",
+                    k: "",
                     u: `${data.gameplay.name}`,
                 },
             });
@@ -221,13 +217,17 @@ socket.onmessage = event => {
     }
     if (tempCountry !== user.country){
         tempCountry = user.country;
-        country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') white no-repeat`;
-        country.style.backgroundSize = "30px 20px";
+        country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') no-repeat`;
+        country.style.backgroundSize = "22.5px 15px";
         country.style.backgroundPosition = "50% 50%";
     }    
     if (tempRanks !== user.pp_rank){
         tempRanks = user.pp_rank;
         ranks.innerHTML = "#" + tempRanks;
+    }
+    if (tempPlayerPP !== user.pp_raw){
+        tempPlayerPP = user.pp_raw;
+        playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
     }
     if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.full) {
         tempTimeCurrent = data.menu.bm.time.current;
