@@ -11,8 +11,8 @@
     src: url("../fonts/GoogleSans-Regular.otf");
 }
 @font-face{
-    font-family:"outbound";
-    src:url("../fonts/outbound-regular.otf");
+    font-family:"Exo";
+    src:url("../fonts/Exo2-MediumItalic.otf");
 }
 body,html{
     padding: 0;
@@ -99,6 +99,7 @@ body,html{
     border-color: #161616;
     border-radius: 25px;
     box-shadow: 0 0 3px black;
+    transition: ease-in-out 500ms;
 }
 #ranks{
     position: absolute;
@@ -115,6 +116,7 @@ body,html{
     border-color: #161616;
     border-radius: 25px;
     box-shadow: 0 0 3px black;
+    transition: ease-in-out 500ms;
 }
 #hp{
     position: absolute;
@@ -187,7 +189,7 @@ body,html{
     position: absolute;
     width: 1920px;
     height: 300px;
-    bottom: 20px;
+    bottom: 0px;
 }
 #mapContainer {
 	position: absolute;
@@ -195,15 +197,24 @@ body,html{
     left: 715px;
     height: 70px;
 	width: 490px;
-	background-color: black;
     background-size: cover;
+    background-color: black;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 	border-radius: 50px;
 	z-index: 1;
-	box-shadow: 0px 0px 9px -3px black;
     border-style: solid;
     border-width: 2px;
     border-color: white;
     transition: ease-in-out 500ms;
+}
+#overlay {
+	position: absolute;
+	height: 70px;
+	width: 490px;
+	z-index: 0;
+    background-color: rgba(0,0,0,0.4);
+	border-radius: 50px;
+    transition: ease-in-out 100ms;
 }
 #combo {
 	position: absolute;
@@ -212,14 +223,14 @@ body,html{
 	border-radius: 25px;
     border-style: solid;
     border-width: 3px;
-    border-color: #161616;
+    border-color: white;
     bottom: 35px;
-    left: 525px;
-	width: 200px;
-    box-shadow: 0 5px 9px black;
+    left: 30px;
+	width: 150px;
+    /*box-shadow: 5px 0px 3px rgba(0,0,0,.3);*/
     
-	background-color: #FFFFFF;
-	color: #161616;
+	background-color: #161616;
+	color: white;
     
     font-family: Nexa Bold;
 	font-size: 25px;
@@ -238,15 +249,17 @@ body,html{
 	padding: 5px 0px 5px 0px;
 	text-align: center;
 	border-radius: 25px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
     border-style: solid;
     border-width: 3px;
-    border-color: #161616;
+    border-color: white;
     bottom: 35px;
-    right: 525px;
-	width: 200px;
-    box-shadow: 0 5px 9px black;
+    left: 160px;
+	width: 150px;
+    box-shadow: 5px 0px 3px black;
     
-	background-color: #FFFFFF;
+	background-color: white;
 	color: #161616;
     
     font-family: Nexa Bold;
@@ -255,7 +268,7 @@ body,html{
 	
     transition: ease-in-out 500ms;
     
-    z-index: 0;
+    z-index: -1;
     
     white-space: nowrap;
 	overflow: hidden;
@@ -269,8 +282,8 @@ body,html{
     border-style: solid;
     border-width: 3px;
     border-color: #161616;
-    bottom: 0px;
-    left: 840px;
+    bottom: 10px;
+    left: 50px;
 	width: 240px;
     
 	background-color: #FFFFFF;
@@ -304,65 +317,85 @@ body,html{
     color: #161616;
 }
 
-#overlay {
-	position: fixed;
-	height: 70px;
-	width: 490px;
-	z-index: 0;
-    background-color: rgba(0,0,0,0.70);
-	border-radius: 50px;
-}
-#mapArtist, #mapTitle, #mapDifficulty ,#mapper{
-    position: absolute;
-    font-family: Gothic-b;
-    width: 200px;
+#mapTitle, #mapDesc{
+    position: relative;
+    font-family: Exo;
+    top: 17px;
+    left: 20px;
+    width: 450px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     z-index: 0;
     font-size: 15px;
     text-shadow: 0 3px 5px black;
+    text-align:  Center;
 }
-#mapArtist{
-    text-align:  Left;
-    top: 17px;
-    left: 30px;
-}
-#mapTitle{
-    text-align:  Right;
-    top: 17px;
-    right: 30px;
-}
-#mapDifficulty{
-    text-align:  Left;
-    top: 37px;
-    left: 30px;
-}
-#mapper{
-    text-align:  right;
-    top: 37px;
-    right: 30px;
-}
-#stars{
+#starsContainer{
     position: absolute;
     font-family: Nexa Bold;
     width: 200px;
-    white-space: nowrap;
+    
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    z-index: 0;
+    
+    z-index: 1;
     font-size: 15px;
     padding: 5px 0px 5px 0px;
     color: #161616;
+    
     background-color: white;
     box-shadow: 0 5px 9px black;
-    top: -20px;
+    
+    top: -30px;
     left: 145px;
+    
     border-radius: 25px;
+    border-color: white;
+    border-style: solid;
+    border-width: 3px;
+    
     transition: ease-in-out 100ms;
 }
-
+#starsCurrent, #stars{
+    position: absolute;
+    font-family: Nexa Bold;
+    width: 150px;
+    
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    
+    z-index: 0;
+    font-size: 15px;
+    padding: 5px 0px 5px 0px;
+    color: white;
+    
+    background-color: #161616;
+    box-shadow: 0 5px 9px black;
+    
+    top: -30px;
+    
+    border-radius: 25px;
+    border-color: white;
+    border-style: solid;
+    border-width: 3px;
+    
+    transition: ease-in-out 100ms;
+}
+#starsCurrent{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    left: 10px;
+}
+#stars{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    right: 10px;
+}
 .chat {
     display: flex;
     text-align: left;
@@ -391,13 +424,13 @@ body,html{
     color: yellow;
 }
 .bot {
-    color: #FF66AA;
+color: #FF66AA;
 }
 .left {
-    color: #1fd0ed;
+color: #1fd0ed;
 }
 .right {
-    color: #ed1855;
+color: #ed1855;
 }
 
 

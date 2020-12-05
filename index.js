@@ -14,11 +14,11 @@ return response.data};*/
 // NOW PLAYING
 let mapContainer = document.getElementById("mapContainer");
 let mapTitle = document.getElementById("mapTitle");
-let mapArtist = document.getElementById("mapArtist");
-let mapDifficulty = document.getElementById("mapDifficulty");
-let mapper = document.getElementById("mapper");
+let mapDesc = document.getElementById("mapDesc")
 let stars = document.getElementById("stars");
+let starsCurrent = document.getElementById("starsCurrent");
 let nowPlayingContainer = document.getElementById("nowPlayingContainer");
+let overlay = document.getElementById("overlay");
 
 // PLAYING SCORE
 let score = document.getElementById("score");
@@ -52,7 +52,8 @@ let animation = {
     acc:  new CountUp('acc', 0, 0, 2, .2, {useEasing: true, useGrouping: false,   separator: " ", decimal: ".", suffix:"%" }),
     score:  new CountUp('score', 0, 0, 0, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: "." }),
     combo:  new CountUp('combo', 0, 0, 0, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: "." , suffix:"x"}),
-    stars:  new CountUp('stars', 0, 0, 2, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: "." , prefix:"Star Rating: "}),
+    starsCurrent:  new CountUp('starsCurrent', 0, 0, 2, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: "." , prefix: "Now: ", suffix:"*"}),
+    stars:  new CountUp('stars', 0, 0, 2, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: ".", prefix: "Full: ", suffix: "*"}),
     pp:  new CountUp('pp', 0, 0, 0, .2, {useEasing: true, useGrouping: true,   separator: " ", decimal: "." , suffix:"pp"}),
 }
 
@@ -71,6 +72,7 @@ let tempMapName;
 let tempMapDiff;
 let tempMapper;
 let tempStars;
+let tempStarsCurrent;
 
 let gameState;
 let tempScore;
@@ -91,6 +93,9 @@ let tempRanks;
 
 let tempHP;
 
+let tempTimeCurrent;
+let tempTimeFull;
+
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
     if(gameState !== data.menu.state){
@@ -98,26 +103,28 @@ socket.onmessage = event => {
         if (gameState == 2){
             score.style.transform = "translateX(0)";
             acc.style.transform = "translateX(0)";
-            combo.style.transform = "translateY(0)";
-            pp.style.transform = "translateY(0)";
-            accInfo.style.transform = "translateY(0)";
+            combo.style.transform = "translateX(0)";
+            pp.style.transform = "translateX(0)";
+            accInfo.style.transform = "translateX(0)";
             ava.style.transform = "translateY(0)";
             username.style.transform = "translateY(0)";
             country.style.transform = "translateY(0)";
             ranks.style.transform = "translateY(0)";
             hp.style.opacity = 1;
+            mapContainer.style.transform = "translateX(700px)";
         }
         else {
             score.style.transform = "translateX(-1000px)";
             acc.style.transform = "translateX(1000px)";
-            combo.style.transform = "translateY(1000px)";
-            pp.style.transform = "translateY(1000px)";
-            accInfo.style.transform = "translateY(200px)";
+            combo.style.transform = "translateX(-500px)";
+            pp.style.transform = "translateX(-500px)";
+            accInfo.style.transform = "translateX(-500px)";
             ava.style.transform = "translateY(-300px)";
             username.style.transform = "translateY(-300px)";
             country.style.transform = "translateY(-300px)";
             ranks.style.transform = "translateY(-300px)";
             hp.style.opacity = 0;
+            mapContainer.style.transform = "translateX(0px)";
         }
     }
     if(tempUsername !== data.gameplay.name){
@@ -130,21 +137,20 @@ socket.onmessage = event => {
         mapContainer.style.backgroundImage = `url('http://127.0.0.1:24050/Songs/${data.menu.bm.path.full}?a=${Math.random(10000)}')`;
         mapContainer.style.backgroundPosition = "50% 50%";
     }
-    if(tempMapArtist !== data.menu.bm.metadata.artist){
-        tempMapArtist = data.menu.bm.metadata.artist;
-        mapArtist.innerHTML = 'Artist: ' + tempMapArtist;
-    }
     if(tempMapName !== data.menu.bm.metadata.title){
         tempMapName = data.menu.bm.metadata.title;
-        mapTitle.innerHTML = 'Title: ' + tempMapName;
+        tempMapArtist = data.menu.bm.metadata.artist;
+        mapTitle.innerHTML = tempMapArtist + ' - ' + tempMapName;
     }
     if(tempMapDiff !== '[' + data.menu.bm.metadata.difficulty + ']'){
         tempMapDiff = '[' + data.menu.bm.metadata.difficulty + ']';
-        mapDifficulty.innerHTML = 'Difficulty: ' + tempMapDiff;
-    }
-    if (tempMapper !== data.menu.bm.metadata.mapper) {
         tempMapper = data.menu.bm.metadata.mapper;
-        mapper.innerHTML = 'Mapper: ' + tempMapper;
+        mapDesc.innerHTML = 'Difficulty: ' + tempMapDiff + " by " + tempMapper;
+    }
+    if (tempStarsCurrent !== data.menu.bm.stats.SR) {
+        tempStarsCurrent = data.menu.bm.stats.SR;
+        starsCurrent.innerHTML = tempStarsCurrent;
+        animation.starsCurrent.update(starsCurrent.innerHTML);
     }
     if (tempStars !== data.menu.bm.stats.fullSR) {
         tempStars = data.menu.bm.stats.fullSR;
@@ -223,4 +229,9 @@ socket.onmessage = event => {
         tempRanks = user.pp_rank;
         ranks.innerHTML = "#" + tempRanks;
     }
+    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.full) {
+        tempTimeCurrent = data.menu.bm.time.current;
+        tempTimeFull = data.menu.bm.time.full;
+		overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
+    } 
 }
