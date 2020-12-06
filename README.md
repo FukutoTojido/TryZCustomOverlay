@@ -1,4 +1,8 @@
 # A **[gosumemory](https://github.com/l3lackShark/gosumemory)** counter based on **[VictimCrasher](https://github.com/VictimCrasher)**'s Wave Tournament counter
+## Special Thanks
+#### **[13lackShark](https://github.com/l3lackShark/)** - Creator of [gosumemory](https://github.com/l3lackShark/gosumemory)
+#### **[VictimCrasher](https://github.com/VictimCrasher)** - Creator of [Wave Tournament Overlay](https://github.com/l3lackShark/static/tree/master/WaveTournament)
+#### **[Mune](https://github.com/truongthinh295)** - He did the API thing, really appreciated!!
 ## How to use?
 - Install **[gosumemory](https://github.com/l3lackShark/gosumemory)** on your computer.
 - Download and Extract TryZCustomOverlay.zip into a folder named TryZCustomOverlay.
