@@ -341,7 +341,7 @@ socket.onmessage = event => {
     }
     if (tempPP !== data.gameplay.pp.current) {
         tempPP = data.gameplay.pp.current;
-        pp.innerHTML = tempPP + 'pp';
+        pp.innerHTML = tempPP;
         //animation.pp.update(pp.innerHTML);
     }
     if (tempMods !== data.menu.mods.str) {

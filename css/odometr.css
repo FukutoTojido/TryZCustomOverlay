@@ -114,6 +114,6 @@
     text-align: center;
 }
 
-.odometer .odometer-inside:after {
+.odometerpp .odometer-inside:after {
     content: "pp"
 }
