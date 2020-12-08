@@ -1,102 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/style.css">
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="deps/countUp.js"></script>
-        <script src="deps/reconnecting-websocket.min.js"></script>
-    </head>
-    
-    <body>
-        <div id="main">
-            <div id="top">
-                <div id="score"></div>
-                <div id="acc"></div>
-                <div id="ava"></div>
-                <div id="username"></div>
-                <div id="hp"></div>
-                <div id="country"></div>
-                <div id="ranks"></div>
-                <div id="playerPP"></div>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/odometr.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="deps/countUp.js"></script>
+    <script src="deps/reconnecting-websocket.min.js"></script>
+    <script src="deps/odometr.js"></script>
+    <script src="deps/Chart.min.js"></script>
+    <script src="deps/smooth.js"></script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="top">
+            <div id="score"></div>
+            <div id="acc"></div>
+            <div id="ava"></div>
+            <div id="username"></div>
+            <div id="hp"></div>
+            <div id="country"></div>
+            <div id="ranks"></div>
+            <div id="playerPP"></div>
+        </div>
+        <div id="middle">
+            <div id="slot1">
+                <div id="slot1cont">
+                    <div id="slot1n"></div>
+                    <div id="slot1s"></div>
+                    <div id="slot1c"></div>
+                </div>
+                <div id="slot1r"></div>
             </div>
-            <div id="middle">
-                <div id="slot1">
-                    <div id="slot1cont">
-                        <div id="slot1n"></div>
-                        <div id="slot1s"></div>
-                        <div id="slot1c"></div>
-                    </div>
-                    <div id="slot1r"></div>
+            <div id="slot2">
+                <div id="slot2cont">
+                    <div id="slot2n"></div>
+                    <div id="slot2s"></div>
+                    <div id="slot2c"></div>
                 </div>
-                <div id="slot2">
-                    <div id="slot2cont">
-                        <div id="slot2n"></div>
-                        <div id="slot2s"></div>
-                        <div id="slot2c"></div>
-                    </div>
-                    <div id="slot2r"></div>
-                </div>
-                <div id="slot3">
-                    <div id="slot3cont">
-                        <div id="slot3n"></div>
-                        <div id="slot3s"></div>
-                        <div id="slot3c"></div>
-                    </div>
-                    <div id="slot3r"></div>
-                </div>
-                <div id="slot4">
-                    <div id="slot4cont">
-                        <div id="slot4n"></div>
-                        <div id="slot4s"></div>
-                        <div id="slot4c"></div>
-                    </div>
-                    <div id="slot4r"></div>
-                </div>
-                <div id="slot5">
-                    <div id="slot5cont">
-                        <div id="slot5n"></div>
-                        <div id="slot5s"></div>
-                        <div id="slot5c"></div>
-                    </div>
-                    <div id="slot5r"></div>
-                </div>
-                <div id="slot0">
-                    <div id="slot0cont">
-                        <div id="slot0n"></div>
-                        <div id="slot0s"></div>
-                        <div id="slot0c"></div>
-                    </div>
-                    <div id="slot0r"></div>
-                </div>
-                
+                <div id="slot2r"></div>
             </div>
-            <div id="bottom">
-                <div id="lowerPart">
-                    <div id="accInfo">
-                        <div id="h300"></div>
-                        <div id="h100"></div>
-                        <div id="h50"></div>
-                        <div id="h0"></div>
-                    </div>
-                    <div id="combo"></div>
-                    <div id="pp"></div>
-                    <div id="mods"></div>
+            <div id="slot3">
+                <div id="slot3cont">
+                    <div id="slot3n"></div>
+                    <div id="slot3s"></div>
+                    <div id="slot3c"></div>
                 </div>
-                <div id="mapContainer">
-                    <!--<div id="nowPlayingText">Now Playing</div>-->
-                    <div id="overlay"></div>
-                    <!--div id="mapArtist"></div>-->
-                    <div id="mapTitle"></div>
-                    <div id="mapDesc"></div>
-                    <div id="starsContainer">Stars Rating</div>
-                    <div id="starsCurrent"></div>
-                    <div id="stars"></div>
+                <div id="slot3r"></div>
+            </div>
+            <div id="slot4">
+                <div id="slot4cont">
+                    <div id="slot4n"></div>
+                    <div id="slot4s"></div>
+                    <div id="slot4c"></div>
+                </div>
+                <div id="slot4r"></div>
+            </div>
+            <div id="slot5">
+                <div id="slot5cont">
+                    <div id="slot5n"></div>
+                    <div id="slot5s"></div>
+                    <div id="slot5c"></div>
+                </div>
+                <div id="slot5r"></div>
+            </div>
+            <div id="slot0">
+                <div id="slot0cont">
+                    <div id="slot0n"></div>
+                    <div id="slot0s"></div>
+                    <div id="slot0c"></div>
+                </div>
+                <div id="slot0r"></div>
+            </div>
+
+        </div>
+        <div id="bottom">
+            <div id="lowerPart">
+                <div id="accInfo">
+                    <div id="h300" class="odometer"></div>
+                    <div id="h100" class="odometer"></div>
+                    <div id="h50" class="odometer"></div>
+                    <div id="h0" class="odometer"></div>
+                </div>
+                <div id="combo"></div>
+                <div id="pp" class="odometer"></div>
+                <div id="mods"></div>
+            </div>
+            <div id="mapContainer">
+                <!--<div id="nowPlayingText">Now Playing</div>-->
+                <div id="overlay"></div>
+                <!--div id="mapArtist"></div>-->
+                <div id="mapTitle"></div>
+                <div id="mapDesc"></div>
+                <div id="starsContainer">Stars Rating</div>
+                <div id="starsCurrent"></div>
+                <div id="stars"></div>
+
+                <div id="strainGraph">
+                    <div id="basegraph">
+                        <canvas id="canvas" width="490" height="50"></canvas>
+                    </div>
+                    <div id="progress">
+                        <canvas id="canvasSecond" width="490" height="50"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <script src="index.js"></script>
-        </body>
-        
-</html>    
+    </div>
+    <svg width="0" height="0">
+            <defs>
+                <clipPath id="myClip">
+                    <rect x="0" y="0" rx="37" ry="37" width="490" height="70"/>
+                </clipPath>
+            </defs>
+        </svg>
+    <script src="index.js"></script>
+</body>
+
+</html>

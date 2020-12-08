@@ -47,22 +47,25 @@ let hp = document.getElementById("hp");
 // LEADERBOARD
 let middle = document.getElementById("middle");
 
+let progressChart = document.getElementById("progress");
+let strainGraph = document.getElementById("strainGraph");
+
 //SLOT
 
 let sloth300 = [],
-sloth100 = [],
-sloth50 = [],
-sloth0 = [],
-slota = [];
+    sloth100 = [],
+    sloth50 = [],
+    sloth0 = [],
+    slota = [];
 let slotN = [],
-slotS = [],
-slotC = [],
-slotR = [],
-slot = [];
+    slotS = [],
+    slotC = [],
+    slotR = [],
+    slot = [];
 
 let tempslotN = [],
-tempslotS = [],
-tempslotC = [];
+    tempslotS = [],
+    tempslotC = [];
 
 let tempslot0r;
 for (var i = 0; i <= 5; ++i) {
@@ -71,7 +74,7 @@ for (var i = 0; i <= 5; ++i) {
     slotS[i] = document.querySelectorAll("[id^=slot]")[3 + 6 * i];
     slotC[i] = document.querySelectorAll("[id^=slot]")[4 + 6 * i];
     slotR[i] = document.querySelectorAll("[id^=slot]")[5 + 6 * i];
-    
+
 }
 
 
@@ -123,13 +126,13 @@ let animation = {
         prefix: "Full: ",
         suffix: "*"
     }),
-    pp: new CountUp('pp', 0, 0, 0, .2, {
+    /*pp: new CountUp('pp', 0, 0, 0, .2, {
         useEasing: true,
         useGrouping: true,
         separator: " ",
         decimal: ".",
         suffix: "pp"
-    }),
+    }),*/
     slot0s: new CountUp('slot0s', 0, 0, 0, .2, {
         useEasing: true,
         useGrouping: true,
@@ -187,9 +190,14 @@ let tempMods;
 let tempTimeCurrent;
 let tempTimeFull;
 
+let tempStrainBase;
+let smoothOffset = 2;
+let seek;
+let fullTime;
+
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
-    let getUser = async () => {
+    let getUser = async() => {
         try {
             const response = await axios.get("/get_user", {
                 baseURL: "https://osu.ppy.sh/api",
@@ -199,7 +207,7 @@ socket.onmessage = event => {
                 },
             });
             return response.data[0];
-            } catch (error) {
+        } catch (error) {
             console.error(error);
         }
     };
@@ -212,8 +220,7 @@ socket.onmessage = event => {
     ava.style.backgroundSize = "100%";
     if (gameState !== data.menu.state) {
         gameState = data.menu.state;
-        if (gameState == 2) {
-            } else {
+        if (gameState == 2) {} else {
             upperPart.style.transform = "translateX(0)";
             score.style.opacity = 1;
             acc.style.opacity = 1;
@@ -232,35 +239,35 @@ socket.onmessage = event => {
             pp.style.backgroundColor = "white";
             pp.style.color = "#161616";
             lowerPart.style.transform = "translateX(0)";
-            
+
             score.style.transform = "translateX(-1000px)";
             acc.style.transform = "translateX(1000px)";
-            
+
             combo.style.transform = "translateX(-500px)";
             pp.style.transform = "translateX(-500px)";
             mods.style.transform = "translateX(-500px)";
             accInfo.style.transform = "translateX(-500px)";
-            
+
             ava.style.transform = "translateY(-300px)";
             playerPP.style.transform = "translateY(-300px)";
             username.style.transform = "translateY(-300px)";
             country.style.transform = "translateY(-300px)";
             ranks.style.transform = "translateY(-300px)";
             hp.style.opacity = 0;
-            
+
             mapContainer.style.transform = "translateX(0px)";
-            
+
             middle.style.opacity = 0;
             middle.style.transform = "translateX(-500px)";
-            
+
             slot[0].style.transform = "translateY(0)";
             slot[1].style.transform = "translateY(0)";
             slot[2].style.transform = "translateY(0)";
             slot[3].style.transform = "translateY(0)";
             slot[4].style.transform = "translateY(0)";
             slot[5].style.transform = "translateY(0)";
-            
-            
+
+
         }
     }
     if (tempUsername !== data.gameplay.name) {
@@ -308,7 +315,7 @@ socket.onmessage = event => {
     }
     if (tempCombo !== data.gameplay.combo.current) {
         tempCombo = data.gameplay.combo.current;
-        if (data.gameplay.combo.current == data.gameplay.combo.max){
+        if (data.gameplay.combo.current == data.gameplay.combo.max) {
             tempMaxCombo = data.gameplay.combo.max;
             slotC[5].innerHTML = tempMaxCombo;
         }
@@ -334,18 +341,18 @@ socket.onmessage = event => {
     }
     if (tempPP !== data.gameplay.pp.current) {
         tempPP = data.gameplay.pp.current;
-        pp.innerHTML = tempPP;
-        animation.pp.update(pp.innerHTML);
+        pp.innerHTML = tempPP + 'pp';
+        //animation.pp.update(pp.innerHTML);
     }
     if (tempMods !== data.menu.mods.str) {
         if (data.menu.mods.num == 0) {
             tempsMods = "None";
-            } else {
+        } else {
             tempsMods = data.menu.mods.str;
         }
         mods.innerHTML = 'Mods: ' + tempsMods;
     }
-    
+
     if (gameState == 2 && data.menu.bm.time.current <= (data.menu.bm.time.firstObj + 1000)) {
         for (let z = 0; z < 5; z++) {
             tempslotN[z] = data.gameplay.leaderboard.slots[z].name;
@@ -358,29 +365,29 @@ socket.onmessage = event => {
             slota[z] = (sloth300[z] * (1) + sloth100[z] * (1 / 3) + sloth50[z] * (1 / 6)) / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]);
             switch (true) {
                 case (slota[z] == 1):
-                slotR[z].innerHTML = "X";
-                slotR[z].style.color = "#f24671";
-                break;
+                    slotR[z].innerHTML = "X";
+                    slotR[z].style.color = "#f24671";
+                    break;
                 case (slota[z] > 0.9 && sloth50[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) < 0.01 && sloth0[z] == 0):
-                slotR[z].innerHTML = "S";
-                slotR[z].style.color = "#f2d646";
-                break;
+                    slotR[z].innerHTML = "S";
+                    slotR[z].style.color = "#f2d646";
+                    break;
                 case ((slota[z] > 0.8 && slota[z] <= 0.9 && sloth0[z] == 0) || (sloth300[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) > 0.9)):
-                slotR[z].innerHTML = "A";
-                slotR[z].style.color = "#46f26e";
-                break;
+                    slotR[z].innerHTML = "A";
+                    slotR[z].style.color = "#46f26e";
+                    break;
                 case ((slota[z] > 0.7 && slota[z] <= 0.8 && sloth0[z] == 0) || (sloth300[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) > 0.8)):
-                slotR[z].innerHTML = "B";
-                slotR[z].style.color = "#469cf2";
-                break;
+                    slotR[z].innerHTML = "B";
+                    slotR[z].style.color = "#469cf2";
+                    break;
                 case ((sloth300[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) > 0.6) || (sloth300[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) <= 0.8)):
-                slotR[z].innerHTML = "C";
-                slotR[z].style.color = "#9f46f2";
-                break;
+                    slotR[z].innerHTML = "C";
+                    slotR[z].style.color = "#9f46f2";
+                    break;
                 case ((sloth300[z] / (sloth300[z] + sloth100[z] + sloth50[z] + sloth0[z]) <= 0.6)):
-                slotR[z].innerHTML = "D";
-                slotR[z].style.color = "#5c5c5c";
-                break;
+                    slotR[z].innerHTML = "D";
+                    slotR[z].style.color = "#5c5c5c";
+                    break;
             }
             slotN[z].innerHTML = tempslotN[z];
             slotS[z].innerHTML = numberWithCommas(tempslotS[z]);
@@ -391,32 +398,32 @@ socket.onmessage = event => {
         tempslot0r = data.gameplay.hits.grade.current;
         switch (tempslot0r) {
             case "SS":
-            slotR[5].innerHTML = "X";
-            slotR[5].style.color = "#f24671";
-            break;
+                slotR[5].innerHTML = "X";
+                slotR[5].style.color = "#f24671";
+                break;
             case "S":
-            slotR[5].innerHTML = tempslot0r;
-            slotR[5].style.color = "#f2d646";
-            break;
+                slotR[5].innerHTML = tempslot0r;
+                slotR[5].style.color = "#f2d646";
+                break;
             case "A":
-            slotR[5].innerHTML = tempslot0r;
-            slotR[5].style.color = "#46f26e";
-            break;
+                slotR[5].innerHTML = tempslot0r;
+                slotR[5].style.color = "#46f26e";
+                break;
             case "B":
-            slotR[5].innerHTML = tempslot0r;
-            slotR[5].style.color = "#469cf2";
-            break;
+                slotR[5].innerHTML = tempslot0r;
+                slotR[5].style.color = "#469cf2";
+                break;
             case "C":
-            slotR[5].innerHTML = tempslot0r;
-            slotR[5].style.color = "#9f46f2";
-            break;
+                slotR[5].innerHTML = tempslot0r;
+                slotR[5].style.color = "#9f46f2";
+                break;
             case "D":
-            slotR[5].innerHTML = tempslot0r;
-            slotR[5].style.color = "#5c5c5c";
-            break;
+                slotR[5].innerHTML = tempslot0r;
+                slotR[5].style.color = "#5c5c5c";
+                break;
         }
-        
-        } else if (gameState == 2 && data.menu.bm.time.current > (data.menu.bm.time.firstObj + 1000)) {
+
+    } else if (gameState == 2 && data.menu.bm.time.current > (data.menu.bm.time.firstObj + 1000)) {
         console.log(data.gameplay.leaderboard.isVisible);
         if (data.gameplay.leaderboard.ourplayer.position <= data.gameplay.leaderboard.slots[4].position && data.gameplay.leaderboard.ourplayer.position !== 0) {
             slot[5].style.transform = "translateY(-70px)";
@@ -438,13 +445,13 @@ socket.onmessage = event => {
             slot[5].style.transform = "translateY(-350px)";
             slot[0].style.transform = "translateY(70px)";
         }
-        if (/*data.gameplay.leaderboard.ourplayer.position < 6 && */(data.gameplay.leaderboard.isVisible == false) && (data.gameplay.leaderboard.hasLeaderboard == true) && (data.gameplay.leaderboard.slots.length > 6)) {
+        if ( /*data.gameplay.leaderboard.ourplayer.position < 6 && */ (data.gameplay.leaderboard.isVisible == false) && (data.gameplay.leaderboard.hasLeaderboard == true) && (data.gameplay.leaderboard.slots.length > 6)) {
             middle.style.opacity = 1;
             middle.style.transform = "translateX(0)";
-            } else {
+        } else {
             middle.style.opacity = 0;
         }
-        } else {
+    } else {
         slot[5].style.transform = "translateY(0)";
         slot[0].style.transform = "translateY(0)";
         slot[1].style.transform = "translateY(0)";
@@ -452,10 +459,10 @@ socket.onmessage = event => {
         slot[3].style.transform = "translateY(0)";
         slot[4].style.transform = "translateY(0)";
     }
-    
+
     if (data.gameplay.hp.smooth > 0) {
         hp.style.transform = `scaleX(${data.gameplay.hp.smooth / 200})`;
-        } else {
+    } else {
         hp.style.transform = `scaleX(1)`;
     }
     if (tempCountry !== user.country) {
@@ -472,20 +479,20 @@ socket.onmessage = event => {
         tempPlayerPP = user.pp_raw;
         playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
     }
-    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.full) {
+    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.mp3) {
         tempTimeCurrent = data.menu.bm.time.current;
-        tempTimeFull = data.menu.bm.time.full;
+        tempTimeFull = data.menu.bm.time.mp3;
         overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
         if (gameState == 2) {
             interfaceID = data.settings.showInterface;
             score.style.transform = "translateX(0)";
             acc.style.transform = "translateX(0)";
-            
+
             combo.style.transform = "translateX(0)";
             pp.style.transform = "translateX(0)";
             mods.style.transform = "translateX(0)";
             accInfo.style.transform = "translateX(0)";
-            
+
             ava.style.transform = "translateY(0)";
             playerPP.style.transform = "translateY(0)";
             username.style.transform = "translateY(0)";
@@ -510,7 +517,7 @@ socket.onmessage = event => {
                 pp.style.backgroundColor = "#161616";
                 pp.style.color = "white";
                 lowerPart.style.transform = "translateX(1492px) translateY(-130px)";
-                } else {
+            } else {
                 upperPart.style.transform = "translateX(0)";
                 score.style.opacity = 1;
                 acc.style.opacity = 1;
@@ -532,4 +539,104 @@ socket.onmessage = event => {
             }
         }
     }
-} 
+    if (fullTime !== data.menu.bm.time.mp3) {
+        fullTime = data.menu.bm.time.mp3;
+        onepart = 490 / fullTime;
+    }
+    if (tempStrainBase != JSON.stringify(data.menu.pp.strains)) {
+        tempLink = JSON.stringify(data.menu.pp.strains);
+        smoothed = smooth(data.menu.pp.strains, smoothOffset);
+        config.data.datasets[0].data = smoothed;
+        config.data.labels = smoothed;
+        configSecond.data.datasets[0].data = smoothed;
+        configSecond.data.labels = smoothed;
+        window.myLine.update();
+        window.myLineSecond.update();
+    }
+    if (seek !== data.menu.bm.time.current && fullTime !== undefined && fullTime != 0) {
+        seek = data.menu.bm.time.current;
+        progressChart.style.width = onepart * seek + 'px';
+    }
+}
+window.onload = function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+
+    var ctxSecond = document.getElementById('canvasSecond').getContext('2d');
+    window.myLineSecond = new Chart(ctxSecond, configSecond);
+};
+
+let config = {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            borderColor: 'rgba(255, 255, 255, 0)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            data: [],
+            fill: true,
+        }]
+    },
+    options: {
+        tooltips: { enabled: false },
+        legend: {
+            display: false,
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                cubicInterpolationMode: 'monotone'
+            },
+            point: {
+                radius: 0
+            }
+        },
+        responsive: false,
+        scales: {
+            x: {
+                display: false,
+            },
+            y: {
+                display: false,
+            }
+        }
+    }
+};
+
+let configSecond = {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            borderColor: 'rgba(0, 0, 0, 0.3)',
+            borderWidth: '2',
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            data: [],
+            fill: true,
+        }]
+    },
+    options: {
+        tooltips: { enabled: false },
+        legend: {
+            display: false,
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                cubicInterpolationMode: 'monotone'
+            },
+            point: {
+                radius: 0
+            }
+        },
+        responsive: false,
+        scales: {
+            x: {
+                display: false,
+            },
+            y: {
+                display: false,
+            }
+        }
+    }
+};
