@@ -47,6 +47,9 @@ let hp = document.getElementById("hp");
 // LEADERBOARD
 let middle = document.getElementById("middle");
 
+let progressChart = document.getElementById("progress");
+let strainGraph = document.getElementById("strainGraph");
+
 //SLOT
 
 let sloth300 = [],
@@ -123,13 +126,13 @@ let animation = {
         prefix: "Full: ",
         suffix: "*"
     }),
-    pp: new CountUp('pp', 0, 0, 0, .2, {
+    /*pp: new CountUp('pp', 0, 0, 0, .2, {
         useEasing: true,
         useGrouping: true,
         separator: " ",
         decimal: ".",
         suffix: "pp"
-    }),
+    }),*/
     slot0s: new CountUp('slot0s', 0, 0, 0, .2, {
         useEasing: true,
         useGrouping: true,
@@ -187,9 +190,14 @@ let tempMods;
 let tempTimeCurrent;
 let tempTimeFull;
 
+let tempStrainBase;
+let smoothOffset = 2;
+let seek;
+let fullTime;
+
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
-    let getUser = async () => {
+    let getUser = async() => {
         try {
             const response = await axios.get("/get_user", {
                 baseURL: "https://osu.ppy.sh/api",
@@ -212,27 +220,7 @@ socket.onmessage = event => {
     ava.style.backgroundSize = "100%";
     if (gameState !== data.menu.state) {
         gameState = data.menu.state;
-        if (gameState == 2) {
-            score.style.transform = "translateX(0)";
-            acc.style.transform = "translateX(0)";
-
-            combo.style.transform = "translateX(0)";
-            pp.style.transform = "translateX(0)";
-            mods.style.transform = "translateX(0)";
-            accInfo.style.transform = "translateX(0)";
-
-            ava.style.transform = "translateY(0)";
-            playerPP.style.transform = "translateY(0)";
-            username.style.transform = "translateY(0)";
-            country.style.transform = "translateY(0)";
-            ranks.style.transform = "translateY(0)";
-            hp.style.opacity = 1;
-
-            middle.style.opacity = 1;
-            middle.style.transform = "translateX(0)";
-
-            mapContainer.style.transform = "translateX(700px)";
-        } else {
+        if (gameState == 2) {} else {
             upperPart.style.transform = "translateX(0)";
             score.style.opacity = 1;
             acc.style.opacity = 1;
@@ -319,48 +307,6 @@ socket.onmessage = event => {
         score.innerHTML = tempScore;
         animation.score.update(score.innerHTML);
         animation.slot0s.update(slotS[5].innerHTML);
-        if (interfaceID !== data.settings.showInterface && gameState == 2) {
-            interfaceID = data.settings.showInterface;
-            if (interfaceID == 1) {
-                upperPart.style.transform = "translateX(-710px) translateY(30px)";
-                score.style.opacity = 0;
-                acc.style.opacity = 0;
-                hp.style.opacity = 0;
-                combo.style.opacity = 0;
-                playerPP.style.transform = "scale(1.28) translateY(-50px) translateX(40px)";
-                playerPP.style.width = 200;
-                playerPP.style.zIndex = -2;
-                ranks.style.transform = "scale(1.28) translateY(-50px) translateX(-40px)";
-                ranks.style.width = 200;
-                ranks.style.zIndex = -2;
-                pp.style.width = "300px";
-                pp.style.transform = "translateX(-140px)";
-                pp.style.borderTopLeftRadius = "25px";
-                pp.style.borderBottomLeftRadius = "25px";
-                pp.style.backgroundColor = "#161616";
-                pp.style.color = "white";
-                lowerPart.style.transform = "translateX(1492px) translateY(-130px)";
-            } else {
-                upperPart.style.transform = "translateX(0)";
-                score.style.opacity = 1;
-                acc.style.opacity = 1;
-                hp.style.opacity = 1;
-                combo.style.opacity = 1;
-                playerPP.style.transform = "scale(1)";
-                playerPP.style.width = 100;
-                playerPP.style.zIndex = 0;
-                ranks.style.transform = "scale(1)";
-                ranks.style.width = 100;
-                ranks.style.zIndex = 0;
-                pp.style.width = "150px";
-                pp.style.transform = "translateX(0px)";
-                pp.style.borderTopLeftRadius = "0px";
-                pp.style.borderBottomLeftRadius = "0px";
-                pp.style.backgroundColor = "white";
-                pp.style.color = "#161616";
-                lowerPart.style.transform = "translateX(0)";
-            }
-        }
     }
     if (tempAcc !== data.gameplay.accuracy) {
         tempAcc = data.gameplay.accuracy;
@@ -369,8 +315,10 @@ socket.onmessage = event => {
     }
     if (tempCombo !== data.gameplay.combo.current) {
         tempCombo = data.gameplay.combo.current;
-        tempMaxCombo = data.gameplay.combo.max;
-        slotC[5].innerHTML = tempMaxCombo;
+        if (data.gameplay.combo.current == data.gameplay.combo.max) {
+            tempMaxCombo = data.gameplay.combo.max;
+            slotC[5].innerHTML = tempMaxCombo;
+        }
         combo.innerHTML = tempCombo;
         animation.combo.update(combo.innerHTML);
         animation.slot0c.update(slotC[5].innerHTML);
@@ -393,8 +341,8 @@ socket.onmessage = event => {
     }
     if (tempPP !== data.gameplay.pp.current) {
         tempPP = data.gameplay.pp.current;
-        pp.innerHTML = tempPP;
-        animation.pp.update(pp.innerHTML);
+        pp.innerHTML = tempPP + 'pp';
+        //animation.pp.update(pp.innerHTML);
     }
     if (tempMods !== data.menu.mods.str) {
         if (data.menu.mods.num == 0) {
@@ -405,9 +353,8 @@ socket.onmessage = event => {
         mods.innerHTML = 'Mods: ' + tempsMods;
     }
 
-    if (gameState == 2 && data.menu.bm.time.current > (data.menu.bm.time.firstObj + 1000)) {
-
-        for (let z = 0; z <= 5; z++) {
+    if (gameState == 2 && data.menu.bm.time.current <= (data.menu.bm.time.firstObj + 1000)) {
+        for (let z = 0; z < 5; z++) {
             tempslotN[z] = data.gameplay.leaderboard.slots[z].name;
             tempslotS[z] = data.gameplay.leaderboard.slots[z].score;
             tempslotC[z] = data.gameplay.leaderboard.slots[z].maxCombo;
@@ -477,7 +424,7 @@ socket.onmessage = event => {
         }
 
     } else if (gameState == 2 && data.menu.bm.time.current > (data.menu.bm.time.firstObj + 1000)) {
-       console.log(data.gameplay.leaderboard.isVisible);
+        console.log(data.gameplay.leaderboard.isVisible);
         if (data.gameplay.leaderboard.ourplayer.position <= data.gameplay.leaderboard.slots[4].position && data.gameplay.leaderboard.ourplayer.position !== 0) {
             slot[5].style.transform = "translateY(-70px)";
             slot[4].style.transform = "translateY(70px)";
@@ -498,12 +445,11 @@ socket.onmessage = event => {
             slot[5].style.transform = "translateY(-350px)";
             slot[0].style.transform = "translateY(70px)";
         }
-        if (data.gameplay.leaderboard.ourplayer.position < 6 && (data.gameplay.leaderboard.isVisible == false)) {
-
-            middle.style.opacity = 0;
+        if ( /*data.gameplay.leaderboard.ourplayer.position < 6 && */ (data.gameplay.leaderboard.isVisible == false) && (data.gameplay.leaderboard.hasLeaderboard == true) && (data.gameplay.leaderboard.slots.length > 6)) {
+            middle.style.opacity = 1;
             middle.style.transform = "translateX(0)";
         } else {
-            middle.style.opacity = 1;
+            middle.style.opacity = 0;
         }
     } else {
         slot[5].style.transform = "translateY(0)";
@@ -533,9 +479,164 @@ socket.onmessage = event => {
         tempPlayerPP = user.pp_raw;
         playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
     }
-    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.full) {
+    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.mp3) {
         tempTimeCurrent = data.menu.bm.time.current;
-        tempTimeFull = data.menu.bm.time.full;
+        tempTimeFull = data.menu.bm.time.mp3;
         overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
+        if (gameState == 2) {
+            interfaceID = data.settings.showInterface;
+            score.style.transform = "translateX(0)";
+            acc.style.transform = "translateX(0)";
+
+            combo.style.transform = "translateX(0)";
+            pp.style.transform = "translateX(0)";
+            mods.style.transform = "translateX(0)";
+            accInfo.style.transform = "translateX(0)";
+
+            ava.style.transform = "translateY(0)";
+            playerPP.style.transform = "translateY(0)";
+            username.style.transform = "translateY(0)";
+            country.style.transform = "translateY(0)";
+            mapContainer.style.transform = "translateX(700px)";
+            if (interfaceID == 1) {
+                upperPart.style.transform = "translateX(-710px) translateY(30px)";
+                score.style.opacity = 0;
+                acc.style.opacity = 0;
+                hp.style.opacity = 0;
+                combo.style.opacity = 0;
+                playerPP.style.transform = "scale(1.28) translateY(-50px) translateX(40px)";
+                playerPP.style.width = 200;
+                playerPP.style.zIndex = -2;
+                ranks.style.transform = "scale(1.28) translateY(-50px) translateX(-40px)";
+                ranks.style.width = 200;
+                ranks.style.zIndex = -2;
+                pp.style.width = "300px";
+                pp.style.transform = "translateX(-140px)";
+                pp.style.borderTopLeftRadius = "25px";
+                pp.style.borderBottomLeftRadius = "25px";
+                pp.style.backgroundColor = "#161616";
+                pp.style.color = "white";
+                lowerPart.style.transform = "translateX(1492px) translateY(-130px)";
+            } else {
+                upperPart.style.transform = "translateX(0)";
+                score.style.opacity = 1;
+                acc.style.opacity = 1;
+                hp.style.opacity = 1;
+                combo.style.opacity = 1;
+                playerPP.style.transform = "scale(1)";
+                playerPP.style.width = 100;
+                playerPP.style.zIndex = 0;
+                ranks.style.transform = "scale(1)";
+                ranks.style.width = 100;
+                ranks.style.zIndex = 0;
+                pp.style.width = "150px";
+                pp.style.transform = "translateX(0px)";
+                pp.style.borderTopLeftRadius = "0px";
+                pp.style.borderBottomLeftRadius = "0px";
+                pp.style.backgroundColor = "white";
+                pp.style.color = "#161616";
+                lowerPart.style.transform = "translateX(0)";
+            }
+        }
     }
-} 
+    if (fullTime !== data.menu.bm.time.mp3) {
+        fullTime = data.menu.bm.time.mp3;
+        onepart = 490 / fullTime;
+    }
+    if (tempStrainBase != JSON.stringify(data.menu.pp.strains)) {
+        tempLink = JSON.stringify(data.menu.pp.strains);
+        smoothed = smooth(data.menu.pp.strains, smoothOffset);
+        config.data.datasets[0].data = smoothed;
+        config.data.labels = smoothed;
+        configSecond.data.datasets[0].data = smoothed;
+        configSecond.data.labels = smoothed;
+        window.myLine.update();
+        window.myLineSecond.update();
+    }
+    if (seek !== data.menu.bm.time.current && fullTime !== undefined && fullTime != 0) {
+        seek = data.menu.bm.time.current;
+        progressChart.style.width = onepart * seek + 'px';
+    }
+}
+window.onload = function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+
+    var ctxSecond = document.getElementById('canvasSecond').getContext('2d');
+    window.myLineSecond = new Chart(ctxSecond, configSecond);
+};
+
+let config = {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            borderColor: 'rgba(255, 255, 255, 0)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            data: [],
+            fill: true,
+        }]
+    },
+    options: {
+        tooltips: { enabled: false },
+        legend: {
+            display: false,
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                cubicInterpolationMode: 'monotone'
+            },
+            point: {
+                radius: 0
+            }
+        },
+        responsive: false,
+        scales: {
+            x: {
+                display: false,
+            },
+            y: {
+                display: false,
+            }
+        }
+    }
+};
+
+let configSecond = {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            borderColor: 'rgba(0, 0, 0, 0.3)',
+            borderWidth: '2',
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            data: [],
+            fill: true,
+        }]
+    },
+    options: {
+        tooltips: { enabled: false },
+        legend: {
+            display: false,
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                cubicInterpolationMode: 'monotone'
+            },
+            point: {
+                radius: 0
+            }
+        },
+        responsive: false,
+        scales: {
+            x: {
+                display: false,
+            },
+            y: {
+                display: false,
+            }
+        }
+    }
+};
