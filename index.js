@@ -77,6 +77,17 @@ for (var i = 0; i <= 5; ++i) {
 
 }
 
+// UR
+
+let tick = [];
+
+for (var t = 0; t < 10; t++) {
+    tick[t] = document.querySelectorAll("[id^=tick]")[t];
+}
+
+let URbar = document.getElementById("URbar");
+let URtick = document.getElementById("URtick");
+let avgHitError = document.getElementById("avgHitError");
 
 // SLOT 1
 //let slot1 = document.getElementById("slot1");
@@ -195,6 +206,13 @@ let smoothOffset = 2;
 let seek;
 let fullTime;
 
+let tempHitErrorArrayLength;
+let OD;
+let tickPos;
+let fullPos;
+let tempAvg;
+let tempTotalAvg = 0;
+
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
     let getUser = async() => {
@@ -220,7 +238,7 @@ socket.onmessage = event => {
     ava.style.backgroundSize = "100%";
     if (gameState !== data.menu.state) {
         gameState = data.menu.state;
-        if (gameState == 2) {} else {
+        if (gameState !== 2) {
             upperPart.style.transform = "translateX(0)";
             score.style.opacity = 1;
             acc.style.opacity = 1;
@@ -267,6 +285,12 @@ socket.onmessage = event => {
             slot[4].style.transform = "translateY(0)";
             slot[5].style.transform = "translateY(0)";
 
+            for (var y = 0; y < 10; y++) {
+                tick[y].style.transform = "translateX(0)";
+                tick[y].style.opacity = 0;
+            }
+            tickPos = 0;
+            tempAvg = 0;
 
         }
     }
@@ -301,12 +325,48 @@ socket.onmessage = event => {
         stars.innerHTML = tempStars;
         animation.stars.update(stars.innerHTML);
     }
+    if (data.gameplay.score == 0) {
+        for (var y = 0; y < 10; y++) {
+            tick[y].style.transform = "translateX(0)";
+            tick[y].style.opacity = 0;
+        }
+    }
     if (tempScore !== data.gameplay.score) {
         tempScore = data.gameplay.score;
         slotS[5].innerHTML = tempScore;
         score.innerHTML = tempScore;
         animation.score.update(score.innerHTML);
         animation.slot0s.update(slotS[5].innerHTML);
+        if (OD !== data.menu.bm.stats.OD) {
+            OD = data.menu.bm.stats.OD;
+        }
+        if (tempHitErrorArrayLength !== data.gameplay.hits.hitErrorArray.length) {
+            tempHitErrorArrayLength = data.gameplay.hits.hitErrorArray.length;
+            for (var a = 0; a < tempHitErrorArrayLength; a++) {
+                tempTotalAvg += data.gameplay.hits.hitErrorArray[a];
+            }
+            tempAvg = tempTotalAvg / tempHitErrorArrayLength;
+            fullPos = (-10 * OD + 199.5);
+            tickPos = data.gameplay.hits.hitErrorArray[tempHitErrorArrayLength - 1] / fullPos * 145;
+            avgHitError.style.transform = `translateX(${tempAvg / fullPos * 145}px)`;
+        }
+        for (var c = 0; c < 10; c++) {
+            if ((tempHitErrorArrayLength % 10) == ((c + 1) % 10)) {
+                if (c >= 3) {
+                    tick[c].style.opacity = 0.7;
+                    tick[c].style.transform = `translateX(${tickPos}px)`;
+                    tick[c].style.height = "20px";
+                    tick[c - 3].style.opacity = 0;
+                    tick[c - 3].style.height = "1px";
+                } else {
+                    tick[c].style.opacity = .7;
+                    tick[c].style.transform = `translateX(${tickPos}px)`;
+                    tick[c].style.height = "20px";
+                    tick[c + 7].style.opacity = 0;
+                    tick[c + 7].style.height = "1px";
+                }
+            }
+        }
     }
     if (tempAcc !== data.gameplay.accuracy) {
         tempAcc = data.gameplay.accuracy;
@@ -479,7 +539,7 @@ socket.onmessage = event => {
         tempPlayerPP = user.pp_raw;
         playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
     }
-    if (tempTimeCurrent !== data.menu.bm.time.current || tempTimeFull !== data.menu.bm.time.mp3) {
+    if (tempTimeCurrent !== data.menu.bm.time.current) {
         tempTimeCurrent = data.menu.bm.time.current;
         tempTimeFull = data.menu.bm.time.mp3;
         overlay.style.clipPath = `inset(0 ${(1 - (tempTimeCurrent / tempTimeFull)) * 100}% 0 0)`;
@@ -543,7 +603,7 @@ socket.onmessage = event => {
         fullTime = data.menu.bm.time.mp3;
         onepart = 490 / fullTime;
     }
-    if (tempStrainBase != JSON.stringify(data.menu.pp.strains)) {
+    if (tempStrainBase !== JSON.stringify(data.menu.pp.strains)) {
         tempLink = JSON.stringify(data.menu.pp.strains);
         smoothed = smooth(data.menu.pp.strains, smoothOffset);
         config.data.datasets[0].data = smoothed;
@@ -553,11 +613,12 @@ socket.onmessage = event => {
         window.myLine.update();
         window.myLineSecond.update();
     }
-    if (seek !== data.menu.bm.time.current && fullTime !== undefined && fullTime != 0) {
+    if (seek !== data.menu.bm.time.current && fullTime !== undefined && fullTime !== 0) {
         seek = data.menu.bm.time.current;
         progressChart.style.width = onepart * seek + 'px';
     }
 }
+
 window.onload = function() {
     var ctx = document.getElementById('canvas').getContext('2d');
     window.myLine = new Chart(ctx, config);

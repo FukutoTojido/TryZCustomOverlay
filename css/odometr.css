@@ -117,3 +117,7 @@
 .odometer.pp .odometer-inside:after {
     content: "pp"
 }
+
+.odometer.combo .odometer-inside:after {
+    content: "x"
+}
