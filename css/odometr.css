@@ -121,3 +121,7 @@
 .odometer.combo .odometer-inside:after {
     content: "x"
 }
+
+.odometer.URIndex .odometer-inside:after {
+    content: "UR"
+}

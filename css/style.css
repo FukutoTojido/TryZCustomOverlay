@@ -53,103 +53,30 @@ html {
     transition: ease-in-out 500ms;
 }
 
-#ava {
-    position: absolute;
-    left: 917px;
-    top: 0px;
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-    border-style: solid;
-    border-width: 3px;
-    border-color: white;
-    box-shadow: 0 10px 9px black;
-    transition: ease-in-out 500ms;
-}
-
 #username {
     position: absolute;
     left: 860px;
-    top: 95px;
+    top: 25px;
     width: 200px;
-    padding: 5px 0 5px 0;
+    line-height: 51px;
     background-color: white;
-    border-radius: 25px;
+    border-radius: 30px;
     border-style: solid;
     border-width: 2px;
-    border-color: white;
-    font-size: 15px;
+    border-color: #161616;
+    font-size: 20px;
     color: #161616;
     text-align: center;
     transition: ease-in-out 500ms;
     z-index: 1;
-}
-
-#ranks {
-    position: absolute;
-    right: 770px;
-    top: 95px;
-    width: 100px;
-    color: white;
-    background-color: #161616;
-    padding: 5px 0px 5px 0px;
-    font-size: 15px;
-    color: white;
-    text-align: center;
-    border-style: solid;
-    border-width: 2px;
-    border-color: white;
-    border-radius: 25px;
-    box-shadow: 0 0 3px black;
-    transition: ease-in-out 500ms;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-#playerPP {
-    position: absolute;
-    left: 770px;
-    top: 95px;
-    width: 100px;
-    color: white;
-    background-color: #161616;
-    padding: 5px 0px 5px 0px;
-    font-size: 15px;
-    color: white;
-    text-align: center;
-    border-style: solid;
-    border-width: 2px;
-    border-color: white;
-    border-radius: 25px;
-    box-shadow: 0 0 3px black;
-    transition: ease-in-out 500ms;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-#country {
-    position: absolute;
-    left: 946.5px;
-    top: 73px;
-    width: 23px;
-    height: 15px;
-    background-color: #161616;
-    font-size: 15px;
-    color: white;
-    text-align: center;
-    border-style: solid;
-    border-width: 2px;
-    border-color: white;
-    border-radius: 25px;
-    transition: ease-in-out 500ms;
-    z-index: 0;
+    box-shadow: 0px 0px 9px black, 0px 0px 9px black;
 }
 
 #hp {
     position: absolute;
     transform-origin: centre;
     width: 1800px;
-    top: 80px;
+    top: 50px;
     left: 60px;
     padding: 2px 0 2px 0;
     background-color: #FFFFFF;
@@ -164,18 +91,22 @@ html {
     padding: 5px 0px 5px 0px;
     text-align: center;
     border-radius: 25px;
+    border-radius: 30px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
     top: 30px;
-    left: 720px;
+    left: 680px;
     width: 220px;
     box-shadow: 0 5px 9px black;
-    background-color: #FFFFFF;
-    color: #161616;
+    background-color: #161616;
+    color: white;
     font-family: Google Sans Bold;
     font-weight: 900;
     font-size: 25px;
     display: block;
     transition: ease-in-out 500ms;
-    z-index: -1;
+    z-index: 0;
 }
 
 #acc {
@@ -183,17 +114,20 @@ html {
     padding: 5px 0px 5px 0px;
     text-align: center;
     border-radius: 25px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
     top: 30px;
-    right: 720px;
+    right: 680px;
     width: 220px;
     box-shadow: 0 5px 9px black;
-    background-color: #FFFFFF;
-    color: #161616;
+    background-color: #161616;
+    color: white;
     font-family: Google Sans Bold;
     font-size: 25px;
     display: block;
     transition: ease-in-out 500ms;
-    z-index: -1;
+    z-index: 0;
 }
 
 #middle {
@@ -621,44 +555,58 @@ html {
 
 #URbar {
     position: absolute;
+    left: 810px;
+    bottom: 20px;
     width: 300px;
-    height: 5px;
+    height: 7.5px;
     background-color: #DAAE46;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 9px black;
+    transition: ease-in-out 1000ms;
 }
 
 #avgHitError {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 20px;
+    height: 20px;
     top: -20px;
-    left: 147.5px;
-    background-color: white;
-    transition: ease-in-out 500ms;
+    left: 140px;
+    background-image: url("../static/arrowtick.png");
+    background-size: 100%;
+    transition: ease-out 100ms;
+    transform-origin: 50% 50%;
+    -webkit-filter: drop-shadow(5px 5px 5px #222222);
+    filter: drop-shadow(5px 5px 5px #222222);
 }
 
 #URtick {
     position: absolute;
-    left: 147.5px;
-    width: 5px;
-    height: 5px;
-    background-color: black;
+    left: 148px;
+    width: 4px;
+    height: 15px;
+    background-color: #32BCE9;
     transition: ease-out 500ms;
 }
 
 #l100 {
     position: absolute;
-    height: 5px;
+    height: 7.5px;
     width: 209.8px;
     left: 45.1px;
     background-color: #57E313;
+    transition: ease-in-out 500ms;
 }
 
 #l300 {
     position: absolute;
-    height: 5px;
+    height: 7.5px;
     width: 119.5px;
     left: 90.25px;
     background-color: #32BCE9;
+    transition: ease-in-out 500ms;
 }
 
 #tick0,
@@ -670,53 +618,46 @@ html {
 #tick6,
 #tick7,
 #tick8,
-#tick9 {
+#tick9,
+#tick10,
+#tick11,
+#tick12,
+#tick13,
+#tick14,
+#tick15,
+#tick16,
+#tick17,
+#tick18,
+#tick19 {
     position: absolute;
-    top: -7.5px;
-    height: 0px;
+    top: 15px;
+    height: 10px;
     width: 5px;
     background-color: white;
     left: 147.5px;
-    transition: opacity 0.2s linear 0s, height 0.1s linear 0s;
-    border-radius: 2.5px;
+    border-radius: 3px;
+    transition: ease-out 500ms;
 }
 
-
-/*#tick1 {
-    background-color: darkgreen;
+#URIndex {
+    position: absolute;
+    bottom: 50px;
+    left: 907px;
+    width: 100px;
+    font-size: 20px;
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0px 5px 0px;
+    color: #ffffff;
+    background-color: #161616;
+    box-shadow: 0 5px 9px black;
+    border-radius: 25px;
+    border-color: white;
+    border-style: solid;
+    border-width: 3px;
+    transition: ease-in-out 1000ms;
 }
-
-#tick2 {
-    background-color: rgb(131, 42, 190);
-}
-
-#tick3 {
-    background-color: rgb(209, 130, 10);
-}
-
-#tick4 {
-    background-color: rgb(60, 140, 214);
-}
-
-#tick5 {
-    background-color: fuchsia;
-}
-
-#tick6 {
-    background-color: rgb(20, 207, 45);
-}
-
-#tick7 {
-    background-color: rgb(238, 62, 18);
-}
-
-#tick8 {
-    background-color: rgb(214, 60, 206);
-}
-
-#tick9 {
-    background-color: rgb(181, 214, 60);
-}*/
 
 .chat {
     display: flex;

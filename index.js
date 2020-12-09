@@ -1,11 +1,6 @@
-// PASTE YOUR API HERE
-let api = "";
-
 // START
 let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/ws");
 let mapid = document.getElementById('mapid');
-let axios = window.axios;
-let user = {};
 
 // NOW PLAYING
 let mapContainer = document.getElementById("mapContainer");
@@ -35,11 +30,7 @@ let h0 = document.getElementById("h0");
 let pp = document.getElementById("pp");
 
 // PLAYER INFO
-let ava = document.getElementById("ava");
 let username = document.getElementById("username");
-let country = document.getElementById("country");
-let ranks = document.getElementById("ranks");
-let playerPP = document.getElementById("playerPP");
 
 // HP BAR
 let hp = document.getElementById("hp");
@@ -81,13 +72,17 @@ for (var i = 0; i <= 5; ++i) {
 
 let tick = [];
 
-for (var t = 0; t < 10; t++) {
+for (var t = 0; t < 20; t++) {
     tick[t] = document.querySelectorAll("[id^=tick]")[t];
 }
 
 let URbar = document.getElementById("URbar");
 let URtick = document.getElementById("URtick");
 let avgHitError = document.getElementById("avgHitError");
+
+let l300 = document.getElementById("l300");
+let l100 = document.getElementById("l100");
+let URIndex = document.getElementById("URIndex");
 
 // SLOT 1
 //let slot1 = document.getElementById("slot1");
@@ -190,10 +185,6 @@ let temp0;
 let tempPP;
 
 let tempUsername;
-let tempUID;
-let tempCountry;
-let tempRanks;
-let tempPlayerPP;
 
 let tempHP;
 let tempMods;
@@ -207,35 +198,18 @@ let seek;
 let fullTime;
 
 let tempHitErrorArrayLength;
-let OD;
+let OD = 0;
 let tickPos;
 let fullPos;
 let tempAvg;
 let tempTotalAvg = 0;
+let tempTotalWeighted = 0;
+let tempBool;
+
+let tempURIndex;
 
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
-    let getUser = async() => {
-        try {
-            const response = await axios.get("/get_user", {
-                baseURL: "https://osu.ppy.sh/api",
-                params: {
-                    k: `${api}`,
-                    u: `${data.gameplay.name}`,
-                },
-            });
-            return response.data[0];
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    Promise.resolve(getUser()).then((data) => Object.assign(user, data));
-    if (tempUID !== user.user_id) {
-        tempUID = user.user_id;
-        ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
-        // slot0a.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`; useless for now
-    }
-    ava.style.backgroundSize = "100%";
     if (gameState !== data.menu.state) {
         gameState = data.menu.state;
         if (gameState !== 2) {
@@ -244,12 +218,7 @@ socket.onmessage = event => {
             acc.style.opacity = 1;
             hp.style.opacity = 1;
             combo.style.opacity = 1;
-            playerPP.style.transform = "scale(1)";
-            playerPP.style.width = 100;
-            playerPP.style.zIndex = 0;
-            ranks.style.transform = "scale(1)";
-            ranks.style.width = 100;
-            ranks.style.zIndex = 0;
+
             pp.style.width = "150px";
             pp.style.transform = "translateX(0px)";
             pp.style.borderTopLeftRadius = "0px";
@@ -266,12 +235,8 @@ socket.onmessage = event => {
             mods.style.transform = "translateX(-500px)";
             accInfo.style.transform = "translateX(-500px)";
 
-            ava.style.transform = "translateY(-300px)";
-            playerPP.style.transform = "translateY(-300px)";
-            username.style.transform = "translateY(-300px)";
-            country.style.transform = "translateY(-300px)";
-            ranks.style.transform = "translateY(-300px)";
             hp.style.opacity = 0;
+            username.style.transform = "translateY(-300px)";
 
             mapContainer.style.transform = "translateX(0px)";
 
@@ -285,13 +250,22 @@ socket.onmessage = event => {
             slot[4].style.transform = "translateY(0)";
             slot[5].style.transform = "translateY(0)";
 
-            for (var y = 0; y < 10; y++) {
+            for (var y = 0; y < 20; y++) {
                 tick[y].style.transform = "translateX(0)";
                 tick[y].style.opacity = 0;
             }
             tickPos = 0;
             tempAvg = 0;
-
+            l300.style.width = "119.5px";
+            l300.style.transform = "translateX(0)";
+            l100.style.width = "209.8px";
+            l100.style.transform = "translateX(0)";
+            avgHitError.style.transform = "translateX(0)";
+            URIndex.style.transform = "translateY(500px)";
+            URbar.style.transform = "translateY(500px)";
+        } else {
+            URIndex.style.transform = "translateY(0)";
+            URbar.style.transform = "translateY(0)";
         }
     }
     if (tempUsername !== data.gameplay.name) {
@@ -326,52 +300,40 @@ socket.onmessage = event => {
         animation.stars.update(stars.innerHTML);
     }
     if (data.gameplay.score == 0) {
-        for (var y = 0; y < 10; y++) {
+        for (var y = 0; y < 20; y++) {
             tick[y].style.transform = "translateX(0)";
             tick[y].style.opacity = 0;
         }
     }
     if (tempScore !== data.gameplay.score) {
+        tempTotalAvg = 0;
+        tempTotalWeighted = 0;
+        tempAvg = 0;
         tempScore = data.gameplay.score;
         slotS[5].innerHTML = tempScore;
         score.innerHTML = tempScore;
         animation.score.update(score.innerHTML);
         animation.slot0s.update(slotS[5].innerHTML);
-        if (OD !== data.menu.bm.stats.OD) {
-            OD = data.menu.bm.stats.OD;
-        }
-        if (tempHitErrorArrayLength !== data.gameplay.hits.hitErrorArray.length) {
-            tempHitErrorArrayLength = data.gameplay.hits.hitErrorArray.length;
-            for (var a = 0; a < tempHitErrorArrayLength; a++) {
-                tempTotalAvg += data.gameplay.hits.hitErrorArray[a];
-            }
-            tempAvg = tempTotalAvg / tempHitErrorArrayLength;
-            fullPos = (-10 * OD + 199.5);
-            tickPos = data.gameplay.hits.hitErrorArray[tempHitErrorArrayLength - 1] / fullPos * 145;
-            avgHitError.style.transform = `translateX(${tempAvg / fullPos * 145}px)`;
-        }
-        for (var c = 0; c < 10; c++) {
-            if ((tempHitErrorArrayLength % 10) == ((c + 1) % 10)) {
-                if (c >= 3) {
-                    tick[c].style.opacity = 0.7;
-                    tick[c].style.transform = `translateX(${tickPos}px)`;
-                    tick[c].style.height = "20px";
-                    tick[c - 3].style.opacity = 0;
-                    tick[c - 3].style.height = "1px";
-                } else {
-                    tick[c].style.opacity = .7;
-                    tick[c].style.transform = `translateX(${tickPos}px)`;
-                    tick[c].style.height = "20px";
-                    tick[c + 7].style.opacity = 0;
-                    tick[c + 7].style.height = "1px";
-                }
-            }
-        }
     }
     if (tempAcc !== data.gameplay.accuracy) {
         tempAcc = data.gameplay.accuracy;
         acc.innerHTML = tempAcc;
         animation.acc.update(acc.innerHTML);
+    }
+    if (tempMods !== data.menu.mods.str) {
+        if (data.menu.mods.num == 0) {
+            tempsMods = "None";
+        } else {
+            tempMods = data.menu.mods.str;
+        }
+        mods.innerHTML = 'Mods: ' + tempMods;
+        if (OD !== data.menu.bm.stats.OD) {
+            if (data.menu.mods.str.indexOf("DT") == -1) {
+                OD = data.menu.bm.stats.OD;
+            } else {
+                OD = 500 / 333 * data.menu.bm.stats.OD + (-2210) / 333;
+            }
+        }
     }
     if (tempCombo !== data.gameplay.combo.current) {
         tempCombo = data.gameplay.combo.current;
@@ -382,6 +344,37 @@ socket.onmessage = event => {
         combo.innerHTML = tempCombo;
         animation.combo.update(combo.innerHTML);
         animation.slot0c.update(slotC[5].innerHTML);
+        tempSmooth = smooth(data.gameplay.hits.hitErrorArray, 4);
+        if (tempHitErrorArrayLength !== tempSmooth.length) {
+            tempHitErrorArrayLength = tempSmooth.length;
+            for (var a = 0; a < tempHitErrorArrayLength; a++) {
+
+                tempAvg = tempAvg * 0.90 + tempSmooth[a] * 0.1;
+            }
+            //tempAvg = tempTotalAvg / tempTotalWeighted;
+            fullPos = (-10 * OD + 199.5);
+            tickPos = data.gameplay.hits.hitErrorArray[tempHitErrorArrayLength - 1] / fullPos * 145;
+            avgHitError.style.transform = `translateX(${(tempAvg / fullPos) * 150}px)`;
+            l100.style.width = `${(-8 * OD + 139.5) / fullPos * 300}px`;
+            l100.style.transform = `translateX(${(209.8 - ((-8 * OD + 139.5) / fullPos * 300))/2}px)`;
+            l300.style.width = `${(-6 * OD + 79.5) / fullPos * 300}px`;
+            l300.style.transform = `translateX(${(119.5 - ((-6 * OD + 79.5) / fullPos * 300))/2}px)`;
+            for (var c = 0; c < 20; c++) {
+                if ((tempHitErrorArrayLength % 20) == ((c + 1) % 20)) {
+                    tick[c].style.opacity = 1;
+                    tick[c].style.transform = `translateX(${tickPos}px)`;
+                    var s = document.querySelectorAll("[id^=tick]")[c].style;
+                    s.opacity = 1;
+                    (function fade() {
+                        (s.opacity -= .1) < 0 ? s.opacity = 0 : setTimeout(fade, 250)
+                    })();
+                }
+            }
+        }
+    }
+    if (tempURIndex !== data.gameplay.hits.unstableRate) {
+        tempURIndex = data.gameplay.hits.unstableRate;
+        URIndex.innerHTML = tempURIndex;
     }
     if (temp300 !== data.gameplay.hits[300]) {
         temp300 = data.gameplay.hits[300];
@@ -402,15 +395,6 @@ socket.onmessage = event => {
     if (tempPP !== data.gameplay.pp.current) {
         tempPP = data.gameplay.pp.current;
         pp.innerHTML = tempPP;
-        //animation.pp.update(pp.innerHTML);
-    }
-    if (tempMods !== data.menu.mods.str) {
-        if (data.menu.mods.num == 0) {
-            tempsMods = "None";
-        } else {
-            tempsMods = data.menu.mods.str;
-        }
-        mods.innerHTML = 'Mods: ' + tempsMods;
     }
 
     if (gameState == 2 && data.menu.bm.time.current <= (data.menu.bm.time.firstObj + 1000)) {
@@ -505,7 +489,7 @@ socket.onmessage = event => {
             slot[5].style.transform = "translateY(-350px)";
             slot[0].style.transform = "translateY(70px)";
         }
-        if ( /*data.gameplay.leaderboard.ourplayer.position < 6 && */ (data.gameplay.leaderboard.isVisible == false) && (data.gameplay.leaderboard.hasLeaderboard == true) && (data.gameplay.leaderboard.slots.length > 6)) {
+        if ((data.gameplay.leaderboard.isVisible == false) && (data.gameplay.leaderboard.hasLeaderboard == true) && (data.gameplay.leaderboard.slots.length > 6)) {
             middle.style.opacity = 1;
             middle.style.transform = "translateX(0)";
         } else {
@@ -525,20 +509,6 @@ socket.onmessage = event => {
     } else {
         hp.style.transform = `scaleX(1)`;
     }
-    if (tempCountry !== user.country) {
-        tempCountry = user.country;
-        country.style.background = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png') no-repeat`;
-        country.style.backgroundSize = "22.5px 15px";
-        country.style.backgroundPosition = "50% 50%";
-    }
-    if (tempRanks !== user.pp_rank) {
-        tempRanks = user.pp_rank;
-        ranks.innerHTML = "#" + tempRanks;
-    }
-    if (tempPlayerPP !== user.pp_raw) {
-        tempPlayerPP = user.pp_raw;
-        playerPP.innerHTML = Math.round(tempPlayerPP) + "pp";
-    }
     if (tempTimeCurrent !== data.menu.bm.time.current) {
         tempTimeCurrent = data.menu.bm.time.current;
         tempTimeFull = data.menu.bm.time.mp3;
@@ -553,23 +523,14 @@ socket.onmessage = event => {
             mods.style.transform = "translateX(0)";
             accInfo.style.transform = "translateX(0)";
 
-            ava.style.transform = "translateY(0)";
-            playerPP.style.transform = "translateY(0)";
             username.style.transform = "translateY(0)";
-            country.style.transform = "translateY(0)";
             mapContainer.style.transform = "translateX(700px)";
             if (interfaceID == 1) {
-                upperPart.style.transform = "translateX(-710px) translateY(30px)";
+                upperPart.style.transform = "translateX(-800px) translateY(10px)";
                 score.style.opacity = 0;
                 acc.style.opacity = 0;
                 hp.style.opacity = 0;
                 combo.style.opacity = 0;
-                playerPP.style.transform = "scale(1.28) translateY(-50px) translateX(40px)";
-                playerPP.style.width = 200;
-                playerPP.style.zIndex = -2;
-                ranks.style.transform = "scale(1.28) translateY(-50px) translateX(-40px)";
-                ranks.style.width = 200;
-                ranks.style.zIndex = -2;
                 pp.style.width = "300px";
                 pp.style.transform = "translateX(-140px)";
                 pp.style.borderTopLeftRadius = "25px";
@@ -583,12 +544,6 @@ socket.onmessage = event => {
                 acc.style.opacity = 1;
                 hp.style.opacity = 1;
                 combo.style.opacity = 1;
-                playerPP.style.transform = "scale(1)";
-                playerPP.style.width = 100;
-                playerPP.style.zIndex = 0;
-                ranks.style.transform = "scale(1)";
-                ranks.style.width = 100;
-                ranks.style.zIndex = 0;
                 pp.style.width = "150px";
                 pp.style.transform = "translateX(0px)";
                 pp.style.borderTopLeftRadius = "0px";
