@@ -307,7 +307,7 @@ socket.onmessage = event => {
 
                 document.getElementById("leaderboardx").style.transform = 'none';
 
-                if (!ourplayerSet) {
+                if (!ourplayerSet && leaderboardEnable === "1") {
                     ourplayerSet = 1;
                     ourplayerContainer = document.createElement("div");
                     ourplayerContainer.id = "ourplayer";
@@ -344,7 +344,7 @@ socket.onmessage = event => {
                 <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 60px;">${data.gameplay.accuracy.toFixed(2)}%</span>
                 ${$('#'+ minimodsContainerOP.id).prop("outerHTML")}`;
 
-                if (!leaderboardSet) {
+                if (!leaderboardSet && leaderboardEnable === "1") {
                     leaderboardSet = 1;
 
                     for (var i = tempSlotLength - 1; i > 0; i--) {

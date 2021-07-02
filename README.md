@@ -13,6 +13,11 @@
 - Run gosumemory, wait for it to finish loading and create a localhost URL (e.g. https://127.0.0.1:24050).
 - Run OBS, add Browser Source, paste https://127.0.0.1:24050/TryZCustomOverlay into OBS and you're done!
 ## Changelog:
+> #### **1.0.0**
+> - Added API. Go to config.json to add the API key.
+> - Leaderboard rework, can support full 50-player leaderboard. Also added the way to turn it on or off in config.json.
+> - Hit Error Meter rework.
+> - UI Redesign
 > #### **0.0.3**
 > - Removal of API on 13lackShark's request.
 > - Odometer Effect added for Combo, Accuracy Stats and PP.
@@ -34,8 +39,8 @@
 > - Bottom elements: Accuracy Stats, Combo, PP Counter, Mods Combination, Now Playing, SR
 > - Automatically hides top elements when not in gameplay (such as Result Screen, Song Select)
 ## Screenshot:
-![Hidamari no Uta](https://i.imgur.com/E2wXoJq.png)
+![Hidamari no Uta](https://i.imgur.com/d16ZoVf.jpeg)
 ## Video: 
-[![IMAGE ALT TEXT](https://img.youtube.com/vi/B2GcuRu0oII/0.jpg)](https://youtu.be/B2GcuRu0oII "Custom PP Counter Initial Release 0.0.1")
+[![IMAGE ALT TEXT](http://i3.ytimg.com/vi/zCsYjmV4EZU/hqdefault.jpg)](https://www.youtube.com/watch?v=zCsYjmV4EZU "Custom PP Counter 1.0")
 [![IMAGE ALT TEXT](https://img.youtube.com/vi/OLJ--b5kam8/0.jpg)](https://www.youtu.be/OLJ--b5kam8
  "Custom PP Counter Initial Release 0.0.1")
