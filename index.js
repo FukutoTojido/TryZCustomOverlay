@@ -235,7 +235,8 @@ socket.onmessage = event => {
             l100.style.transform = "translateX(0)";
             avgHitError.style.transform = "translateX(0)";
 
-            bottom.style.transform = "translateY(300px)"
+            bottom.style.transform = "translateY(300px)";
+            URIndex.style.transform = 'none';
 
             document.getElementById("modContainer").style.transform = "translateX(500px)";
 
@@ -406,10 +407,10 @@ socket.onmessage = event => {
                 }
             }
 
-            if (interfaceID == 1) {
+            if (interfaceID == 1 && gameState == 2) {
                 upperPart.style.transform = "translateY(-130px)";
-                bottom.style.transform = "translateY(500px)";
-                URIndex.style.transform = "translateY(-450px)";
+                bottom.style.transform = "translateY(300px)";
+                URIndex.style.transform = "translateY(-280px)";
             } else {
                 upperPart.style.transform = 'none';
                 bottom.style.transform = 'none';
