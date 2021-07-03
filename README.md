@@ -5,11 +5,12 @@
 #### **[Mune](https://github.com/truongthinh295)** - He did the API thing, really appreciated!!
 #### **[Gr33ntii](https://github.com/gr33ntii)** - Cleanup my code and also optimize leaderboard. Very kul guy!!
 #### **[Kuroni](https://github.com/kuroni)** - He helped me with the Hit Error Meter thing. Also this man is really good at osu!. One of the best VN No Mod Players \o/
+## I WILL NOT PROVIDE ANY SUPPORT FOR CHANGING THE POSITION, SIZE AND ANYTHING RELATED TO THE ELEMENTS INSIDE THE OVERLAY. IF YOU WANT TO CHANGE ANYTHING, DO IT YOURSELF.
 ## How to use?
 - Install **[gosumemory](https://github.com/l3lackShark/gosumemory)** on your computer.
 - Download and Extract TryZCustomOverlay.zip into a folder named TryZCustomOverlay.
 - Copy and Paste TryZCustomOverlay folder to gosumemory's static folder on your computer.
-- <del> Open index.js with Notepad++, look at line 2 (`let api = ""`), paste your osu!API key inside the quotes and the save the file. </del>(Removed on 13lackShark's request)
+- Add your API key in config.json file.
 - Run gosumemory, wait for it to finish loading and create a localhost URL (e.g. https://127.0.0.1:24050).
 - Run OBS, add Browser Source, paste https://127.0.0.1:24050/TryZCustomOverlay into OBS and you're done!
 ## Changelog:
