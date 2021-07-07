@@ -6,6 +6,10 @@
 #### **[Gr33ntii](https://github.com/gr33ntii)** - Cleanup my code and also optimize leaderboard. Very kul guy!!
 #### **[Kuroni](https://github.com/kuroni)** - He helped me with the Hit Error Meter thing. Also this man is really good at osu!. One of the best VN No Mod Players \o/
 ## I WILL NOT PROVIDE ANY SUPPORT FOR CHANGING THE POSITION, SIZE AND ANYTHING RELATED TO THE ELEMENTS INSIDE THE OVERLAY. IF YOU WANT TO CHANGE ANYTHING, DO IT YOURSELF.
+## Hold up!
+If you are encountering the scorebar being like below:
+![scorebar](https://i.imgur.com/ImKmPG7.png)
+Then most likely you didn't add your API key in `config.json` or the username fetched from the play/replay simply doesn't exist on Bancho server. If you don't like this avatar of [a little cutie Herrscher of Flame by Marin Liekuriva](https://www.hoyolab.com/HI3rd/article/519648), you can change it by replacing `gamer.png` in `TryZCustomOverlay\static\` to your image (reminder that your image name must be `gamer.png`).
 ## How to use?
 - Install **[gosumemory](https://github.com/l3lackShark/gosumemory)** on your computer.
 - Download and Extract TryZCustomOverlay.zip into a folder named TryZCustomOverlay.
@@ -13,6 +17,9 @@
 - Add your API key in config.json file.
 - Run gosumemory, wait for it to finish loading and create a localhost URL (e.g. https://127.0.0.1:24050).
 - Run OBS, add Browser Source, paste https://127.0.0.1:24050/TryZCustomOverlay into OBS and you're done!
+## Some extra features that no one asked in config.json
+- `leaderboardEnable`: Turn Leaderboard on or off pernamently
+- `leaderboardTab`: Turn on or off the function of Tab button to show or hide Leaderboard (The default value is 0 so you have to turn this on by hand :P ) 
 ## Changelog:
 > #### **1.0.0**
 > - Added API. Go to config.json to add the API key.
