@@ -98,7 +98,9 @@ html {
 	height: 100%;
 	box-shadow: 0 5px 5px black;
 	transition: ease-in-out 500ms;
-	background-size: 100%;
+	background-size: 85%;
+	background-position: 50% 20%;
+	background-repeat: no-repeat;
 	clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 	z-index: -1;
 }
@@ -451,7 +453,7 @@ html {
 	top: 15px;
 	height: 10px;
 	width: 4px;
-	background-color: white;
+	background-color: rgba(255 255 255 / .6);
 	left: 147.5px;
 	border-radius: 3px;
 	transition: ease-out 500ms;

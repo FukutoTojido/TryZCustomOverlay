@@ -1,5 +1,5 @@
 const file = [];
-let api, leaderboardEnable = "1";
+let api = "", leaderboardEnable = "1", leaderboardTab = "0";
 async function getAPI() {
     try {
         const jsonData = await $.getJSON("config.json");
@@ -8,6 +8,7 @@ async function getAPI() {
         });
         api = file[0].api;
         leaderboardEnable = file[1].leaderboardEnable;
+        leaderboardTab = file[1].leaderboardTab;
     } catch (error) {
         console.error("Could not read JSON file", error);
     }
@@ -217,7 +218,7 @@ socket.onmessage = event => {
 
     if (tempImg !== data.menu.bm.path.full) {
         tempImg = data.menu.bm.path.full;
-        data.menu.bm.path.full = data.menu.bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25').replace(/\\/g, '/');
+        data.menu.bm.path.full = data.menu.bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25').replace(/\\/g, '/').replace(/'/g, '%27');
         mapContainer.style.backgroundImage = `url('http://127.0.0.1:24050/Songs/${data.menu.bm.path.full}?a=${Math.random(10000)}')`;
         mapContainer.style.backgroundPosition = "50% 50%";
     }
@@ -294,12 +295,23 @@ socket.onmessage = event => {
     }
 
     if (tempTimeCurrent !== data.menu.bm.time.current) {
+        if (tempTimeCurrent > data.menu.bm.time.current) {
+            leaderboard.innerHTML = '';
+            $("#ourplayer").remove();
+            ourplayerSet = 0;
+            leaderboardSet = 0;
+        }
         tempTimeCurrent = data.menu.bm.time.current;
         tempTimeFull = data.menu.bm.time.mp3;
         interfaceID = data.settings.showInterface;
+
+
         if (gameState == 2) {
 
             upperPart.style.transform = "none";
+
+            if (leaderboardTab === "1")
+                document.getElementById("leaderboardx").style.opacity = (data.gameplay.leaderboard.isVisible === true) ? 0 : 1;
 
             if (data.gameplay.leaderboard.slots !== null) {
                 if (tempSlotLength !== data.gameplay.leaderboard.slots.length) {
@@ -343,7 +355,7 @@ socket.onmessage = event => {
                 <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 100px;">${new Intl.NumberFormat().format(Number(data.gameplay.score))}</span>
                 <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 50px;">${data.gameplay.combo.max}x</span>
                 <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 60px;">${data.gameplay.accuracy.toFixed(2)}%</span>
-                ${$('#'+ minimodsContainerOP.id).prop("outerHTML")}`;
+                ${$('#' + minimodsContainerOP.id).prop("outerHTML")}`;
 
                 if (!leaderboardSet && leaderboardEnable === "1") {
                     leaderboardSet = 1;
@@ -513,8 +525,8 @@ socket.onmessage = event => {
             function remove() {
                 document.getElementById("URbar").removeChild(tick);
             }
-            setTimeout(fade, 1000);
-            setTimeout(remove, 1500);
+            setTimeout(fade, 2000);
+            setTimeout(remove, 2500);
         }
     }
 
@@ -633,7 +645,11 @@ function brightnessCheck(element, rgb) {
 }
 
 async function setupUser(name) {
-    let data = await getUserDataSet(name);
+    let data;
+    if (api != "")
+        data = await getUserDataSet(name);
+    else
+        data = null;
     //const avaImage = await getImage('8266808');
     if (data === null) {
         data = {

@@ -1,4 +1,7 @@
 [
-    { "api": "" },
-    { "leaderboardEnable" : "1"}
+	{ "api": "" },
+	{
+		"leaderboardEnable": "1",
+		"leaderboardTab": "0"
+	}
 ]
