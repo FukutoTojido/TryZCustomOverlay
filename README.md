@@ -9,7 +9,7 @@
 ## Hold up!
 - If you are encountering the scorebar being like below:
 ![scorebar](https://i.imgur.com/ImKmPG7.png)
-- Then most likely you didn't add your API key in `config.json` or the username fetched from the play/replay simply doesn't exist on Bancho server. If you don't like this avatar of [a little cutie Herrscher of Flame by Marin Liekuriva](https://www.hoyolab.com/HI3rd/article/519648), you can change it by replacing `gamer.png` in `TryZCustomOverlay\static\` to your image (reminder that your image name must be `gamer.png`).
+- Then most likely you didn't add your API key in `config.json` or the username fetched from the play/replay simply doesn't exist on Bancho server. If you don't like this avatar of [a little cutie Herrscher of Flame by Marin Liekuriva](https://www.hoyolab.com/HI3rd/article/519648), you can change it by replacing `gamer.png` in `TryZCustomOverlay\static\` to your image (your image name must be `gamer.png`).
 ## How to use?
 - Install **[gosumemory](https://github.com/l3lackShark/gosumemory)** on your computer.
 - Download and Extract TryZCustomOverlay.zip into a folder named TryZCustomOverlay.
