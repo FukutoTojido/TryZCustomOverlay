@@ -379,7 +379,7 @@ socket.onmessage = event => {
                         playerContainer.appendChild(minimodsContainer);
                         leaderboard.appendChild(playerContainer);
 
-                        let tempMinimods = data.gameplay.leaderboard.slots[i].mods;
+                        let tempMinimods = data.gameplay.leaderboard.slots[i - 1].mods;
 
                         let minimodsCount = tempMinimods.length;
 
