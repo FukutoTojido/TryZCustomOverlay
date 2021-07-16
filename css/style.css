@@ -1,46 +1,21 @@
 @font-face {
-	font-family: "Google Sans Bold";
-	src: url("../fonts/GoogleSans-Bold.otf");
-}
-
-@font-face {
-	font-family: "Google Sans Thin";
-	src: url("../fonts/GoogleSans-Thin.otf");
-}
-
-@font-face {
-	font-family: "Google Sans Regular";
-	src: url("../fonts/GoogleSans-Regular.otf");
-}
-
-@font-face {
 	font-family: "Exo2";
 	src: url("../fonts/Exo2-MediumItalic.otf");
 }
 
 @font-face {
-	font-family: "GothicB";
-	src: url("../fonts/GOTHICB.ttf");
+	font-family: "GothicR";
+	src: url("../fonts/GothicR.ttf");
 }
 
 @font-face {
-	font-family: "Linotte Regular";
-	src: url("../fonts/Linotte\ Regular.ttf");
+	font-family: "GothicRD";
+	src: url("../fonts/GothicRD.ttf");
 }
 
 @font-face {
-	font-family: "Linotte Light";
-	src: url("../fonts/Linotte\ Light.ttf");
-}
-
-@font-face {
-	font-family: "Linotte Bold";
-	src: url("../fonts/Linotte\ Bold.ttf");
-}
-
-@font-face {
-	font-family: "Linotte Semi Bold";
-	src: url("../fonts/Linotte\ Semi\ Bold.ttf");
+	font-family: "LinotteL";
+	src: url("../fonts/LinotteL.ttf");
 }
 
 body,
@@ -52,7 +27,7 @@ html {
 
 #main {
 	font-size: 30px;
-	font-family: Google Sans Bold;
+	font-family: GothicRD;
 	font-weight: normal;
 	color: white;
 	/*background-image: url('../static/Background.jpg');*/
@@ -64,7 +39,7 @@ html {
 }
 
 .odometer.odometer-auto-theme {
-	font-family: "GothicB", Helvetica, sans-serif !important;
+	font-family: "GothicRD", Helvetica, sans-serif !important;
 	font-weight: 900px !important;
 }
 
@@ -198,7 +173,7 @@ html {
 	top: 30px;
 	width: 220px;
 	box-shadow: 0 5px 9px black;
-	font-family: Google Sans Bold;
+	font-family: GothicRD;
 	font-weight: 900;
 	font-size: 25px;
 	transition: ease-in-out 500ms;
@@ -387,7 +362,7 @@ html {
 #h100,
 #h50,
 #h0 {
-	font-family: Linotte Bold;
+	font-family: GothicR;
 	font-size: 15px;
 	line-height: 20px;
 }
@@ -523,7 +498,7 @@ html {
 	margin-bottom: 5px;
 	transition: ease-in-out 500ms;
 	font-size: 18px;
-	font-family: Linotte Regular;
+	font-family: LinotteL;
 }
 
 .playerContainer::after {
@@ -553,7 +528,7 @@ html {
 	margin-bottom: 5px;
 	transition: ease-in-out 500ms;
 	font-size: 18px;
-	font-family: Linotte Regular;
+	font-family: LinotteL;
 }
 
 .ourplayerContainer::after {

@@ -352,9 +352,9 @@ socket.onmessage = event => {
                 <span style="display: inline-block; width: 190px;">${data.gameplay.leaderboard.ourplayer.name}</span>
                 ${grader(data.gameplay.hits["300"], data.gameplay.hits["100"], data.gameplay.hits["50"], data.gameplay.hits["0"])}
                 <br/>
-                <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 100px;">${new Intl.NumberFormat().format(Number(data.gameplay.score))}</span>
-                <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 50px;">${data.gameplay.combo.max}x</span>
-                <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 60px;">${data.gameplay.accuracy.toFixed(2)}%</span>
+                <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 100px;">${new Intl.NumberFormat().format(Number(data.gameplay.score))}</span>
+                <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 50px;">${data.gameplay.combo.max}x</span>
+                <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 60px;">${data.gameplay.accuracy.toFixed(2)}%</span>
                 ${$('#' + minimodsContainerOP.id).prop("outerHTML")}`;
 
                 if (!leaderboardSet && leaderboardEnable === "1") {
@@ -369,9 +369,9 @@ socket.onmessage = event => {
                         <span style="display: inline-block; width: 190px;">${data.gameplay.leaderboard.slots[i - 1].name}</span>
                         ${grader(data.gameplay.leaderboard.slots[i - 1].h300, data.gameplay.leaderboard.slots[i - 1].h100, data.gameplay.leaderboard.slots[i - 1].h50, data.gameplay.leaderboard.slots[i - 1].h0)}
                         <br/>
-                        <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 100px;">${new Intl.NumberFormat().format(Number(data.gameplay.leaderboard.slots[i - 1].score))}</span>
-                        <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 50px;">${data.gameplay.leaderboard.slots[i - 1].maxCombo}x</span>
-                        <span style="display: inline-block; font-size: 15px; font-family: Linotte Light; width: 60px;">${accuracyCalc(data.gameplay.leaderboard.slots[i - 1].h300, data.gameplay.leaderboard.slots[i - 1].h100, data.gameplay.leaderboard.slots[i - 1].h50, data.gameplay.leaderboard.slots[i - 1].h0)}%</span>`;
+                        <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 100px;">${new Intl.NumberFormat().format(Number(data.gameplay.leaderboard.slots[i - 1].score))}</span>
+                        <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 50px;">${data.gameplay.leaderboard.slots[i - 1].maxCombo}x</span>
+                        <span style="display: inline-block; font-size: 15px; font-family: GothicRD; width: 60px;">${accuracyCalc(data.gameplay.leaderboard.slots[i - 1].h300, data.gameplay.leaderboard.slots[i - 1].h100, data.gameplay.leaderboard.slots[i - 1].h50, data.gameplay.leaderboard.slots[i - 1].h0)}%</span>`;
 
                         let minimodsContainer = document.createElement("div");
                         minimodsContainer.id = `minimodsContainerSlot${i}`;
@@ -683,10 +683,8 @@ async function setupUser(name) {
 
     const avatarColor = await postUserID(tempUID);
     if (avatarColor) {
-        acc.style.backgroundColor = avatarColor[0];
-        score.style.backgroundColor = avatarColor[1]
-        brightnessCheck(acc, avatarColor[0]);
-        brightnessCheck(score, avatarColor[1]);
+        score.style.backgroundColor = `hsl(${avatarColor[0]})`;
+        acc.style.backgroundColor = `hsl(${avatarColor[1]})`;
     }
 }
 
