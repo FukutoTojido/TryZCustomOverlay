@@ -663,7 +663,7 @@ async function setupUser(name) {
     }
     tempUID = data.user_id;
 
-    tempCountry = data.country;
+    tempCountry = `${(data.country).split('').map(char => 127397 + char.charCodeAt())[0].toString(16)}-${(data.country).split('').map(char => 127397 + char.charCodeAt())[1].toString(16)}`;
     tempRanks = data.pp_rank;
     tempcountryRank = data.pp_country_rank;
     tempPlayerPP = data.pp_raw
@@ -672,8 +672,8 @@ async function setupUser(name) {
         ava.style.backgroundImage = `url('https://a.ppy.sh/${tempUID}')`;
     else
         ava.style.backgroundImage = "url('./static/gamer.png')";
-
-    country.style.backgroundImage = `url('https://osu.ppy.sh/images/flags/${tempCountry}.png')`;
+        
+    country.style.backgroundImage = `url('https://osu.ppy.sh/assets/images/flags/${tempCountry}.svg')`;
 
     ranks.innerHTML = "#" + tempRanks;
 
